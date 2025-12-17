@@ -1,0 +1,78 @@
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  z-index: 1000;
+  display: flex;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: var(--drawer-width);
+  max-width: 80%;
+  background: #111827;
+  color: white;
+  overflow-y: auto;
+}
+
+/* Sidebar scrollbar styling */
+.sidebar-content {
+  scrollbar-width: thin;
+  scrollbar-color: #00e6ff transparent;
+}
+
+.sidebar-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar-content::-webkit-scrollbar-thumb {
+  background: #00e6ff;
+  border-radius: 6px;
+  box-shadow: 0 0 6px #00e6ff;
+  animation: neon-breathe 2s infinite alternate;
+}
+
+@keyframes neon-breathe {
+  from {
+    box-shadow: 0 0 4px #00e6ff, 0 0 8px #00e6ff;
+  }
+  to {
+    box-shadow: 0 0 12px #00e6ff, 0 0 20px #00e6ff;
+  }
+}
+
+/* Neon Scrollbar Styling */
+.sidebar {
+  scrollbar-width: thin;                 /* Firefox thin */
+  scrollbar-color: #00e6ff transparent;  /* Firefox neon */
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 6px;        /* thin scrollbar */
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: #00e6ff;
+  border-radius: 6px;
+  box-shadow: 0 0 6px #00e6ff;
+  animation: neon-breathe 2s infinite alternate;
+}
+
+@keyframes neon-breathe {
+  from { box-shadow: 0 0 4px #00e6ff, 0 0 8px #00e6ff; }
+  to   { box-shadow: 0 0 12px #00e6ff, 0 0 20px #00e6ff; }
+}

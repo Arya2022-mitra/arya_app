@@ -1,0 +1,957 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600&family=Poppins:wght@400;600&family=Cinzel:wght@400;700&display=swap");
+@import './voice.css';
+
+:root {
+  --chat-dock-height: 64px;
+  --mv-bg: #0b0f1a;
+  --mv-surface: #102131;
+  --mv-panel: #131d28;
+  --mv-text: #e8f0ff;
+  --mv-muted: #243240;
+  --mv-accent: #19c6d6;
+  --mv-accent-2: #0fb3c2;
+  --mv-cyan: #00ffff;
+  --mv-error: #ff6b6b;
+}
+
+.dark {
+  --mv-bg: #0b0f1a;
+  --mv-surface: #102131;
+  --mv-panel: #131d28;
+  --mv-text: #e8f0ff;
+  --mv-muted: #243240;
+  --mv-accent: #19c6d6;
+  --mv-accent-2: #0fb3c2;
+  --mv-cyan: #00ffff;
+  --mv-error: #ff6b6b;
+}
+
+body {
+  margin: 0;
+  padding-bottom: 0;
+  @apply font-rajdhani bg-neo-dark text-white;
+}
+
+h1,
+h2,
+h3 {
+  @apply font-orbitron;
+}
+
+.input {
+  @apply rounded-lg px-4 py-2 text-base bg-card-dark text-white border-neon-cyan;
+}
+
+@layer base {
+  label {
+    @apply text-white;
+  }
+  input,
+  select,
+  textarea {
+    @apply text-white bg-card-dark border-neon-cyan;
+  }
+  button {
+    @apply text-neon-cyan;
+  }
+  button:hover {
+    @apply bg-card-dark/80;
+  }
+}
+
+@layer utilities {
+  .bg-royal-light-blue {
+    background-color: theme("colors.royal-light-blue");
+  }
+
+  .text-glow {
+    text-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
+  }
+
+  @keyframes neon-breathe {
+    from {
+      box-shadow: 0 0 4px #00e6ff, 0 0 8px #00e6ff;
+    }
+    to {
+      box-shadow: 0 0 12px #00e6ff, 0 0 20px #00e6ff;
+    }
+  }
+
+  .animate-neon-breathe {
+    animation: neon-breathe 2s infinite alternate;
+    border-radius: 6px;
+    background: transparent;
+  }
+
+  .chat-watermark {
+    position: relative;
+  }
+  .chat-watermark::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("/om_watermark.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 60%;
+    opacity: 0.05;
+    pointer-events: none;
+  }
+
+  .circuit-bg {
+    background-image:
+      radial-gradient(
+        circle at center,
+        rgba(43, 155, 255, 0.1),
+        transparent 70%
+      ),
+      repeating-linear-gradient(
+        0deg,
+        rgba(0, 255, 255, 0.05) 0px,
+        rgba(0, 255, 255, 0.05) 2px,
+        transparent 2px,
+        transparent 4px
+      );
+  }
+
+  @keyframes pulse-glow {
+    0%,
+    100% {
+      box-shadow:
+        0 0 5px #00ffff,
+        0 0 10px #2b9bff;
+    }
+    50% {
+      box-shadow:
+        0 0 20px #00ffff,
+        0 0 30px #2b9bff;
+    }
+  }
+  .animate-pulse-glow {
+    animation: pulse-glow 2s infinite;
+  }
+
+  @keyframes breathing-glow {
+    0%,
+    100% {
+      box-shadow: 0 0 8px #00ffff;
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      box-shadow: 0 0 24px #00ffff;
+      transform: scale(1.03);
+      opacity: 0.9;
+    }
+  }
+  .animate-breathing-glow {
+    animation: breathing-glow 2.5s ease-in-out infinite;
+  }
+
+  @keyframes mv-breathing-logo {
+    0%,
+    100% {
+      transform: scale(1);
+      filter: drop-shadow(0 0 10px rgba(25, 198, 214, 0.35));
+    }
+    50% {
+      transform: scale(1.04);
+      filter: drop-shadow(0 0 22px rgba(25, 198, 214, 0.5));
+    }
+  }
+
+  .mv-breathing-logo {
+    animation: mv-breathing-logo 6.5s ease-in-out infinite;
+    will-change: transform, filter;
+  }
+}
+
+.form-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #111827;
+  padding: 30px;
+  border-radius: 10px;
+  border: 1px solid cyan;
+  box-shadow: 0 0 10px cyan;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.input-style {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: 1px solid cyan;
+  background-color: #000;
+  color: cyan;
+}
+
+.button-style {
+  padding: 10px 20px;
+  background-color: transparent;
+  color: theme("colors.neon-cyan");
+  border: 1px solid theme("colors.neon-cyan");
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
+  @apply animate-pulse-glow transition-all duration-300;
+}
+
+.button-style:hover {
+  @apply shadow-[0_0_20px_#00ffff];
+}
+
+.label-style {
+  color: cyan;
+  margin-top: 10px;
+}
+
+@layer utilities {
+  @keyframes border-breathe {
+    0%,
+    100% {
+      box-shadow: 0 0 8px #00ffff;
+      opacity: 0.8;
+    }
+    50% {
+      box-shadow: 0 0 16px #00ffff;
+      opacity: 1;
+    }
+  }
+  .breathing-border {
+    position: relative;
+  }
+  .breathing-border::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
+    border: 1px solid #00ffff;
+    animation: border-breathe 3s ease-in-out infinite;
+  }
+}
+
+.north-indian-chart {
+  position: relative;
+  background-color: #fdfcf5;
+}
+.diamond-block {
+  position: absolute;
+  transform: rotate(45deg);
+  background-color: #fdfcf5;
+  border: 1px solid #b8860b;
+  border-radius: 4px;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.diamond-content {
+  transform: rotate(-45deg);
+  width: 100%;
+}
+
+/* =========================================================================
+   MV-Daily: Backend-composed HTML styles for daily prediction
+   These classes match the backend's response_composer HTML output
+   ========================================================================= */
+
+.mv-daily {
+  @apply space-y-6;
+}
+
+.mv-daily section {
+  @apply rounded-lg border border-slate-700/50 bg-slate-800/30 p-4;
+}
+
+.mv-daily section h3 {
+  @apply mb-3 text-base font-semibold text-neon-cyan;
+}
+
+.mv-daily section .section-content {
+  @apply text-sm text-slate-200 leading-relaxed;
+}
+
+.mv-daily section .section-content p {
+  @apply mb-2;
+}
+
+.mv-daily section .section-content ul {
+  @apply list-disc list-inside space-y-1 mt-2;
+}
+
+.mv-daily section .section-content li {
+  @apply text-slate-300;
+}
+
+/* Time Windows Table */
+.mv-daily section[data-segment="time_windows"] table {
+  @apply w-full text-sm border-collapse mt-2;
+}
+
+.mv-daily section[data-segment="time_windows"] thead {
+  @apply border-b border-slate-600;
+}
+
+.mv-daily section[data-segment="time_windows"] th {
+  @apply text-left py-2 px-3 text-xs uppercase tracking-wide text-slate-400 font-medium;
+}
+
+.mv-daily section[data-segment="time_windows"] td {
+  @apply py-2 px-3 text-slate-300 border-b border-slate-700/50;
+}
+
+.mv-daily section[data-segment="time_windows"] tbody tr:hover {
+  @apply bg-slate-700/30;
+}
+
+/* Quick Decisions Grid */
+.mv-daily section[data-segment="quick_decisions"] .section-content {
+  @apply grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2;
+}
+
+.quick-decision {
+  @apply rounded-lg border p-3 transition-colors;
+  @apply border-slate-600 bg-slate-800/50;
+}
+
+.quick-decision.qd-yes {
+  @apply border-emerald-600/50 bg-emerald-900/20;
+}
+
+.quick-decision.qd-no {
+  @apply border-rose-600/50 bg-rose-900/20;
+}
+
+.quick-decision .qd-question {
+  @apply text-sm font-medium text-slate-100 mb-1;
+}
+
+.quick-decision .qd-answer {
+  @apply text-sm text-slate-200;
+}
+
+.quick-decision.qd-yes .qd-answer {
+  @apply text-emerald-300;
+}
+
+.quick-decision.qd-no .qd-answer {
+  @apply text-rose-300;
+}
+
+.quick-decision .qd-reason {
+  @apply text-xs text-slate-400 mt-1;
+}
+
+.quick-decision .qd-source {
+  @apply text-xs text-slate-500 mt-1;
+}
+
+/* Sources Section */
+.mv-daily section[data-segment="sources"] ul {
+  @apply list-none space-y-1 mt-2;
+}
+
+.mv-daily section[data-segment="sources"] li {
+  @apply text-xs text-slate-400 before:content-['•'] before:mr-2 before:text-slate-500;
+}
+
+/* Badge styling used within mv-daily sections (e.g., time window keys) */
+.mv-daily .badge {
+  @apply ml-2 text-xs px-2 py-0.5 rounded-full bg-slate-700 text-slate-300;
+}
+
+/* =========================================================================
+   Time + Score styling (shared across Daily Time Windows)
+   ========================================================================= */
+.mv-time-range {
+  @apply text-sm font-semibold;
+  color: var(--mv-accent);
+  margin-right: 0.35rem;
+}
+
+.mv-score {
+  @apply text-xs font-bold px-2 py-1 rounded-full inline-flex items-center justify-center;
+  background: rgba(255, 255, 255, 0.08);
+  color: #e2e8f0;
+}
+
+.mv-score--good {
+  background: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+}
+
+.mv-score--neutral {
+  background: rgba(251, 191, 36, 0.2);
+  color: #fbbf24;
+}
+
+.mv-score--bad {
+  background: rgba(244, 63, 94, 0.2);
+  color: #fb7185;
+}
+
+/* =========================================================================
+   MitraVeda Auspicious / Inauspicious states + Pakshi badge styling
+   - Canonical severity classes: .mv-severity--auspicious|inauspicious|neutral
+   - Pakshi badges inherit the same modifier for consistent coloring
+   ========================================================================= */
+.mv-severity--auspicious,
+.mv-auspicious {
+  border-color: rgba(16, 185, 129, 0.7) !important;
+  box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.25);
+  background: radial-gradient(circle at 10% 10%, rgba(16, 185, 129, 0.08), transparent 45%),
+    rgba(15, 118, 110, 0.08);
+}
+
+.mv-severity--inauspicious,
+.mv-inauspicious {
+  border-color: rgba(244, 63, 94, 0.7) !important;
+  box-shadow: 0 0 0 1px rgba(244, 63, 94, 0.25);
+  background: radial-gradient(circle at 10% 10%, rgba(244, 63, 94, 0.08), transparent 45%),
+    rgba(127, 29, 29, 0.08);
+}
+
+.mv-severity--neutral,
+.mv-neutral {
+  border-color: rgba(148, 163, 184, 0.6) !important;
+  box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.2);
+  background: rgba(51, 65, 85, 0.25);
+}
+
+.time-window-card.mv-severity--auspicious,
+.tw-card.mv-severity--auspicious {
+  border-color: rgba(16, 185, 129, 0.5) !important;
+  box-shadow: 0 0 18px rgba(16, 185, 129, 0.18);
+}
+
+.time-window-card.mv-severity--inauspicious,
+.tw-card.mv-severity--inauspicious {
+  border-color: rgba(244, 63, 94, 0.45) !important;
+  box-shadow: 0 0 18px rgba(244, 63, 94, 0.18);
+}
+
+.time-window-card.mv-severity--neutral,
+.tw-card.mv-severity--neutral {
+  border-color: rgba(251, 191, 36, 0.4) !important;
+  box-shadow: 0 0 18px rgba(251, 191, 36, 0.12);
+}
+
+.mv-severity--auspicious .mv-score,
+.mv-auspicious .mv-score {
+  background: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+}
+
+.mv-severity--inauspicious .mv-score,
+.mv-inauspicious .mv-score {
+  background: rgba(244, 63, 94, 0.2);
+  color: #fb7185;
+}
+
+.mv-severity--neutral .mv-score,
+.mv-neutral .mv-score {
+  background: rgba(226, 232, 240, 0.12);
+  color: #e2e8f0;
+}
+
+.time-window-card .mv-pakshi-badge.mv-pakshi--auspicious,
+.tw-card .mv-pakshi-badge.mv-pakshi--auspicious {
+  box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.35);
+}
+
+.time-window-card .mv-pakshi-badge.mv-pakshi--inauspicious,
+.tw-card .mv-pakshi-badge.mv-pakshi--inauspicious {
+  box-shadow: 0 0 0 1px rgba(244, 63, 94, 0.35);
+}
+
+.time-window-card .mv-pakshi-badge.mv-pakshi--neutral,
+.tw-card .mv-pakshi-badge.mv-pakshi--neutral {
+  box-shadow: 0 0 0 1px rgba(251, 191, 36, 0.28);
+}
+
+.mv-pakshi-badge {
+  @apply text-[11px] font-semibold px-2 py-0.5 rounded-full inline-flex items-center gap-1;
+  background: rgba(148, 163, 184, 0.2);
+  color: #e2e8f0;
+  border: 1px solid rgba(148, 163, 184, 0.45);
+}
+
+.mv-pakshi--auspicious {
+  background: rgba(16, 185, 129, 0.18);
+  color: #a7f3d0;
+  border-color: rgba(16, 185, 129, 0.5);
+}
+
+.mv-pakshi--inauspicious {
+  background: rgba(244, 63, 94, 0.18);
+  color: #fecdd3;
+  border-color: rgba(244, 63, 94, 0.5);
+}
+
+.mv-pakshi--neutral {
+  background: rgba(148, 163, 184, 0.16);
+  color: #e2e8f0;
+  border-color: rgba(148, 163, 184, 0.35);
+}
+
+.mv-card-meta {
+  @apply flex items-center gap-2;
+}
+
+/* =========================================================================
+   Hide legacy Time Windows table from backend HTML (replaced by card UI)
+   ========================================================================= */
+.mv-daily section[data-segment="time_windows"] {
+  display: none !important;
+}
+
+/* =========================================================================
+   Defensive CSS: Prevent clipping of backend-injected HTML content
+   Ensures all summary text is fully visible without scrollbars or truncation
+   ========================================================================= */
+.mv-daily,
+.mv-daily section,
+.mv-daily section *,
+.mv-daily .section-content,
+.mv-daily .section-content * {
+  max-height: none !important;
+  height: auto !important;
+  overflow: visible !important;
+  white-space: normal !important;
+  text-overflow: unset !important;
+  -webkit-line-clamp: unset !important;
+  line-clamp: unset !important;
+}
+
+/* =========================================================================
+   Time Window Cards: Responsive grid and card styling
+   ========================================================================= */
+
+.tw-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.25rem;
+  align-items: stretch;
+}
+
+/* Summary Sections: Vertical card layout for sectioned summaries */
+.summary-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; /* Increased gap between sections for better visual separation */
+}
+
+/* Enhanced styling for summary section cards - distinct rectangle boxes */
+.summary-sections .tw-card {
+  min-height: auto;
+  border: 2px solid rgba(0, 255, 255, 0.3);
+  box-shadow: 
+    0 0 25px rgba(0, 255, 255, 0.2),
+    0 10px 40px rgba(0, 0, 0, 0.5);
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(10, 12, 24, 0.95));
+  padding: 1.5rem;
+  border-radius: 1rem;
+}
+
+.summary-sections .tw-card:hover {
+  border-color: rgba(0, 255, 255, 0.5);
+  box-shadow: 
+    0 0 35px rgba(0, 255, 255, 0.3),
+    0 14px 48px rgba(0, 0, 0, 0.6);
+  transform: translateY(-2px);
+}
+
+.tw-card {
+  @apply rounded-2xl p-5;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(10, 12, 24, 0.9));
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  overflow: hidden;
+  min-height: 280px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.tw-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.45);
+}
+
+/* Structured time window cards rendered from canonical data */
+.time-window-card {
+  @apply rounded-2xl border border-slate-700 bg-slate-800/50 p-4 flex flex-col gap-3 shadow-md;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.time-window-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+.time-window-card__header {
+  @apply flex items-start justify-between gap-3;
+}
+
+.time-window-card__label {
+  @apply text-[11px] uppercase tracking-[0.08em] text-slate-400 mb-1;
+}
+
+.time-window-card__title {
+  @apply text-base font-semibold text-slate-100;
+}
+
+.time-window-card__meta {
+  @apply flex flex-wrap items-center gap-2;
+}
+
+.time-window-card__summary {
+  @apply text-sm text-slate-200 leading-relaxed;
+}
+
+.time-window-card__details {
+  @apply space-y-2 text-sm text-slate-200;
+}
+
+.time-window-card__detail {
+  @apply rounded-lg border border-slate-700/70 bg-slate-800/70 px-3 py-2;
+}
+
+/* Category color variants - tinted accents for clear visual distinction */
+.tw-card--auspicious {
+  border-left: 4px solid rgba(34, 197, 94, 0.8);
+  box-shadow: inset 0 1px 0 rgba(34, 197, 94, 0.2), 0 16px 32px rgba(34, 197, 94, 0.12);
+}
+.tw-card--auspicious:hover {
+  border-color: rgba(34, 197, 94, 0.95);
+}
+
+.tw-card--neutral {
+  border-left: 4px solid rgba(251, 191, 36, 0.85);
+  box-shadow: inset 0 1px 0 rgba(251, 191, 36, 0.2), 0 16px 32px rgba(251, 191, 36, 0.12);
+}
+
+.tw-card--inauspicious {
+  border-left: 4px solid rgba(239, 68, 68, 0.85);
+  box-shadow: inset 0 1px 0 rgba(239, 68, 68, 0.2), 0 16px 32px rgba(239, 68, 68, 0.12);
+}
+
+.tw-card--default {
+  border-left: 4px solid rgba(125, 211, 252, 0.7);
+  box-shadow: inset 0 1px 0 rgba(125, 211, 252, 0.2), 0 16px 32px rgba(125, 211, 252, 0.12);
+}
+
+/* Card header row */
+.tw-card__header {
+  @apply flex items-start justify-between gap-3 mb-3;
+}
+
+.tw-card__title {
+  @apply text-base font-semibold text-slate-100;
+}
+
+/* Card content section - for AI summary sections */
+.tw-card__content {
+  @apply text-sm text-slate-200 leading-relaxed;
+  flex: 1;
+}
+
+.tw-card__time {
+  @apply text-xs text-slate-400 whitespace-nowrap;
+}
+
+/* Card meta row: category and score pills */
+.tw-card__meta {
+  @apply flex flex-wrap items-center gap-2 mb-4;
+}
+
+.tw-card__category {
+  @apply text-xs font-medium uppercase tracking-wide px-2 py-1 rounded-full;
+  background: rgba(0, 255, 255, 0.1);
+  color: #00ffff;
+}
+
+.tw-card__category--auspicious {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+.tw-card__category--neutral {
+  background: rgba(251, 191, 36, 0.15);
+  color: #fbbf24;
+}
+
+.tw-card__category--inauspicious {
+  background: rgba(244, 63, 94, 0.15);
+  color: #f43f5e;
+}
+
+.tw-card__score {
+  @apply text-xs font-medium px-2 py-1 rounded-full bg-slate-700/60 text-slate-300;
+}
+
+.mv-badge {
+  @apply inline-flex items-center gap-1 rounded-full px-2 py-1 text-[11px] font-semibold uppercase tracking-wide;
+  background: rgba(226, 232, 240, 0.06);
+  color: #e2e8f0;
+  border: 1px solid rgba(226, 232, 240, 0.2);
+}
+
+.mv-badge--score {
+  background: rgba(14, 165, 233, 0.12);
+  color: #7dd3fc;
+  border-color: rgba(14, 165, 233, 0.2);
+}
+
+.mv-badge--pakshi {
+  background: rgba(250, 204, 21, 0.12);
+  color: #facc15;
+  border-color: rgba(250, 204, 21, 0.2);
+}
+
+.mv-badge--tara {
+  background: rgba(139, 92, 246, 0.12);
+  color: #a78bfa;
+  border-color: rgba(139, 92, 246, 0.2);
+}
+
+.mv-badge--nithya {
+  background: rgba(236, 72, 153, 0.12);
+  color: #f472b6;
+  border-color: rgba(236, 72, 153, 0.2);
+}
+
+/* Drivers display for 16-window time slots */
+.tw-card__drivers {
+  @apply flex flex-wrap items-center gap-1.5 mt-2 mb-3;
+}
+
+.tw-card__driver-tag {
+  @apply inline-flex items-center rounded-md px-1.5 py-0.5 text-[10px] font-medium;
+  background: rgba(100, 116, 139, 0.15);
+  color: #94a3b8;
+  border: 1px solid rgba(100, 116, 139, 0.25);
+}
+
+/* Summary block - must never be clipped */
+.tw-card__summary {
+  @apply text-sm text-slate-200 leading-relaxed mb-4;
+  overflow: visible;
+  white-space: normal;
+  height: auto;
+  max-height: none;
+  flex: 1;
+}
+
+.tw-card__summary p {
+  @apply mb-2;
+}
+
+.tw-card__summary p:last-child {
+  @apply mb-0;
+}
+
+/* AI Summary block - human-readable interpretation and practical advice */
+.tw-card__ai-summary {
+  @apply text-sm leading-relaxed mb-4;
+  overflow: visible;
+  white-space: normal;
+  height: auto;
+  max-height: none;
+  flex: 1;
+}
+
+.tw-card__interpretation {
+  @apply text-slate-200 mb-2;
+}
+
+.tw-card__practical {
+  @apply text-slate-300 text-xs italic;
+}
+
+.tw-card__practical-label {
+  @apply font-normal not-italic;
+}
+
+/* Action buttons */
+.tw-card__actions {
+  @apply flex flex-wrap gap-2 pt-3 border-t border-slate-700/50;
+  margin-top: auto;
+}
+
+.tw-card__btn {
+  @apply text-xs font-medium px-3 py-1.5 rounded-full transition-colors;
+  @apply border border-neon-cyan/60 text-neon-cyan bg-transparent;
+}
+
+.tw-card__btn:hover {
+  @apply bg-neon-cyan/10;
+}
+
+.tw-card__btn:focus {
+  @apply outline-none ring-2 ring-neon-cyan/50 ring-offset-1 ring-offset-slate-900;
+}
+
+.tw-card__btn--secondary {
+  @apply border-slate-600 text-slate-300;
+}
+
+.tw-card__btn--secondary:hover {
+  @apply bg-slate-700/50;
+}
+
+/* =========================================================================
+   Current Time Window: Featured card at top with countdown
+   ========================================================================= */
+
+.current-window {
+  @apply rounded-2xl p-6 mb-6 text-center;
+  background: linear-gradient(135deg, #0a0f1c, #0f1a2e, #0a0f1c);
+  border: 2px solid rgba(0, 255, 255, 0.5);
+  box-shadow: 0 0 25px rgba(0, 255, 255, 0.25);
+}
+
+.current-window__title {
+  @apply text-xs uppercase tracking-widest text-neon-cyan/80 mb-2;
+}
+
+.current-window__name {
+  @apply text-xl font-semibold text-slate-100 mb-1;
+}
+
+.current-window__meta {
+  @apply flex flex-wrap items-center justify-center gap-3 mb-3;
+}
+
+.current-window__time {
+  @apply text-sm text-slate-300;
+}
+
+.current-window__countdown {
+  @apply text-lg font-mono font-semibold text-amber-400;
+}
+
+.current-window__countdown-label {
+  @apply text-xs text-slate-400;
+}
+
+/* Current window color variants - tinted backgrounds matching tw-card */
+.current-window--auspicious {
+  border-color: rgba(16, 185, 129, 0.6);
+  box-shadow: 0 0 25px rgba(16, 185, 129, 0.3);
+  background: linear-gradient(135deg, 
+    rgba(16, 185, 129, 0.12) 0%, 
+    rgba(16, 185, 129, 0.05) 50%, 
+    rgba(10, 15, 28, 0.95) 100%);
+}
+
+.current-window--neutral {
+  border-color: rgba(251, 191, 36, 0.6);
+  box-shadow: 0 0 25px rgba(251, 191, 36, 0.25);
+  background: linear-gradient(135deg, 
+    rgba(251, 191, 36, 0.12) 0%, 
+    rgba(251, 191, 36, 0.05) 50%, 
+    rgba(10, 15, 28, 0.95) 100%);
+}
+
+.current-window--inauspicious {
+  border-color: rgba(244, 63, 94, 0.6);
+  box-shadow: 0 0 25px rgba(244, 63, 94, 0.3);
+  background: linear-gradient(135deg, 
+    rgba(244, 63, 94, 0.12) 0%, 
+    rgba(244, 63, 94, 0.05) 50%, 
+    rgba(10, 15, 28, 0.95) 100%);
+}
+
+/* Default variant for current window */
+.current-window--default {
+  border-color: rgba(0, 255, 255, 0.5);
+  box-shadow: 0 0 25px rgba(0, 255, 255, 0.25);
+}
+
+/* Muhurta Cards - Special time periods (Rahukaalam, Yamagandam, Abhijit, etc.) */
+.muhurta-card {
+  @apply rounded-lg p-4 border-2 transition-all duration-300;
+  background: linear-gradient(135deg, rgba(10, 15, 28, 0.95), rgba(15, 26, 46, 0.95));
+}
+
+.muhurta-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.muhurta-card__header {
+  @apply mb-3;
+}
+
+.muhurta-card__title {
+  @apply text-base font-semibold text-slate-100 mb-1;
+}
+
+.muhurta-card__impact {
+  @apply inline-flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-full;
+}
+
+.muhurta-card__time {
+  @apply text-sm text-slate-300 font-mono;
+}
+
+/* Favorable muhurtas (Abhijit, Vijaya, Godhuli, etc.) */
+.muhurta--favorable {
+  border-color: rgba(16, 185, 129, 0.5);
+  background: linear-gradient(135deg, 
+    rgba(16, 185, 129, 0.1) 0%, 
+    rgba(16, 185, 129, 0.05) 50%, 
+    rgba(10, 15, 28, 0.95) 100%);
+}
+
+.muhurta--favorable:hover {
+  border-color: rgba(16, 185, 129, 0.7);
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.2);
+}
+
+.muhurta-card__impact--favorable {
+  @apply bg-green-600/20 text-green-400;
+}
+
+/* Avoid risk muhurtas (Rahukaalam, Yamagandam, Gulika) */
+.muhurta--avoid {
+  border-color: rgba(244, 63, 94, 0.5);
+  background: linear-gradient(135deg, 
+    rgba(244, 63, 94, 0.1) 0%, 
+    rgba(244, 63, 94, 0.05) 50%, 
+    rgba(10, 15, 28, 0.95) 100%);
+}
+
+.muhurta--avoid:hover {
+  border-color: rgba(244, 63, 94, 0.7);
+  box-shadow: 0 4px 16px rgba(244, 63, 94, 0.2);
+}
+
+.muhurta-card__impact--avoid {
+  @apply bg-red-600/20 text-red-400;
+}
+
+/* Neutral muhurtas */
+.muhurta--neutral {
+  border-color: rgba(148, 163, 184, 0.3);
+}
+
+.muhurta--neutral:hover {
+  border-color: rgba(148, 163, 184, 0.5);
+}
+
+.muhurta-card__impact--neutral {
+  @apply bg-slate-600/20 text-slate-400;
+}

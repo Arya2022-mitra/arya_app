@@ -1,0 +1,12 @@
+:root {
+  --drawer-width: 320px;
+}
+
+.shift-wrapper {
+  margin-left: 0;
+  transition: margin-left 0.3s ease;
+}
+
+.shift-wrapper.drawer-open {
+  margin-left: var(--drawer-width);
+}
