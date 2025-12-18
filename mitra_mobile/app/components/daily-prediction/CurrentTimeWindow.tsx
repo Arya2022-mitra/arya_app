@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { colors, fonts } from '../../../constants/theme';
+import { colors, fonts } from '../../../constants/theme.js';
 
 interface TimeWindow {
   title: string;

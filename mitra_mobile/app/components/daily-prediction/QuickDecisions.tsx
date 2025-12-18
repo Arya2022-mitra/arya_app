@@ -2,7 +2,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { colors, fonts } from '../../../constants/theme';
+import { colors, fonts } from '../../../constants/theme.js';
 
 interface QuickDecisionsProps {
   decisions: {

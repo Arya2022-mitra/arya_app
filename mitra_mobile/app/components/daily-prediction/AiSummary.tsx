@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
-import { colors, fonts } from '../../../constants/theme';
+import { colors, fonts } from '../../../constants/theme.js';
 
 interface AiSummaryProps {
   summary: string;

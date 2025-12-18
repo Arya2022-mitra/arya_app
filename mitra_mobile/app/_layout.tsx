@@ -1,10 +1,10 @@
 import { Stack } from "expo-router";
-import { colors } from "../constants/theme";
-import HamburgerButton from "./components/nav/HamburgerButton";
-import DrawerSidebar from "./components/nav/DrawerSidebar";
+import { colors } from "../constants/theme.js";
+import HamburgerButton from "./components/nav/HamburgerButton.js";
+import DrawerSidebar from "./components/nav/DrawerSidebar.js";
 import { useState } from "react";
 import { I18nextProvider } from "react-i18next";
-import i18n from "./i18n";
+import i18n from "./i18n.js";
 
 export default function RootLayout() {
   const [isSidebarOpen, setSidebarOpen] = useState(false);

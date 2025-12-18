@@ -2,12 +2,12 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { ScrollView, View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { colors, fonts } from '../constants/theme';
-import AiSummary from './components/daily-prediction/AiSummary';
-import QuickDecisions from './components/daily-prediction/QuickDecisions';
-import TimeWindowCard from './components/daily-prediction/TimeWindowCard';
-import SpecialMuhurtas from './components/daily-prediction/SpecialMuhurtas';
-import CurrentTimeWindow from './components/daily-prediction/CurrentTimeWindow';
+import { colors, fonts } from '../constants/theme.js';
+import AiSummary from './components/daily-prediction/AiSummary.js';
+import QuickDecisions from './components/daily-prediction/QuickDecisions.js';
+import TimeWindowCard from './components/daily-prediction/TimeWindowCard.js';
+import SpecialMuhurtas from './components/daily-prediction/SpecialMuhurtas.js';
+import CurrentTimeWindow from './components/daily-prediction/CurrentTimeWindow.js';
 
 // Define the types for our data
 interface TimeWindow {
@@ -70,7 +70,7 @@ export default function DailyPredictionPage() {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
-        <Image source={require('../../assets/images/logo.png')} style={styles.logo} />
+        <Image source={require('../assets/images/logo.png')} style={styles.logo} />
         <Text style={styles.title}>{t('dailyPrediction.hero.title', { name: 'User' })}</Text>
         <Text style={styles.subtitle}>{t('dailyPrediction.hero.subtitle')}</Text>
         <Text style={styles.dateLabel}>{todayLabel}</Text>

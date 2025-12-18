@@ -1,4 +1,3 @@
-
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import en from '@public/locales/en/translation.json';
@@ -10,22 +9,14 @@ i18n
   .use(initReactI18next)
   .init({
     resources: {
-      en: {
-        translation: en,
-      },
-      es: {
-        translation: es,
-      },
-      gu: {
-        translation: gu,
-      },
-      ms: {
-        translation: ms,
-      },
+      en: { translation: en },
+      es: { translation: es },
+      gu: { translation: gu },
+      ms: { translation: ms },
     },
-    lng: 'en', // default language
+    lng: 'en',
     fallbackLng: 'en',
-    interpolation: {
-      escapeValue: false, // react already safes from xss
-    },
+    interpolation: { escapeValue: false },
   });
+
+export default i18n;
