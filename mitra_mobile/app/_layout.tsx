@@ -1,26 +1,24 @@
-
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
-
-import { useColorScheme } from '@/hooks/use-color-scheme';
-
-export const unstable_settings = {
-  anchor: '(tabs)',
-};
+import { Stack } from "expo-router";
+import { colors } from "./styles/theme";
+import "./i18n";
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="auth" options={{ title: 'Authentication' }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <Stack
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: colors["neo-dark"],
+        },
+        headerTintColor: colors.text,
+        headerTitleStyle: {
+          fontWeight: "bold",
+        },
+      }}>
+      <Stack.Screen name="index" options={{ title: "Home" }} />
+      <Stack.Screen name="auth" options={{ title: "Auth" }} />
+      <Stack.Screen name="profile" options={{ title: "Profile" }} />
+      <Stack.Screen name="chat" options={{ title: "Chat" }} />
+      <Stack.Screen name="settings" options={{ title: "Settings" }} />
+    </Stack>
   );
 }

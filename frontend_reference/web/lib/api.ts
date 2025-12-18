@@ -1,9 +1,7 @@
 // web/lib/api.ts
 const DEFAULT_API_BASE = 'https://arya-production-e42c.up.railway.app';
 
-const envApiBase = process.env.NEXT_PUBLIC_API_URL;
-
-const rawApiBase = (envApiBase && envApiBase.trim()) || DEFAULT_API_BASE;
+const rawApiBase = DEFAULT_API_BASE;
 
 /**
  * Validate and normalize the API base URL.

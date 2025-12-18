@@ -1,0 +1,24 @@
+{
+  "auth": {
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "emailPlaceholder": "Email",
+    "passwordPlaceholder": "Password",
+    "confirmPasswordPlaceholder": "Confirm Password",
+    "forgotPassword": "Forgot Password?"
+  },
+  "index": {
+    "heroSubtitle": "Welcome to Mitra Veda",
+    "heroTitle": "Your Personal Guide to Vedic Astrology",
+    "heroDescription": "Navigate your life's journey with ancient wisdom and modern technology. Get personalized insights and predictions based on your unique birth chart.",
+    "beginJourney": "Begin Your Journey",
+    "howItWorks": "How It Works",
+    "timingSectionTitle": "Timing is Everything",
+    "timingSectionDescription": "Mitra Veda helps you identify the most auspicious times for your important decisions.",
+    "trustSectionTitle": "Trust and Transparency",
+    "trustSectionDescription": "Our predictions are based on ancient Vedic principles and are presented with full transparency.",
+    "finalCtaSubtitle": "Ready to unlock your potential?",
+    "finalCtaTitle": "Get started with Mitra Veda today.",
+    "viewPlans": "View Plans"
+  }
+}

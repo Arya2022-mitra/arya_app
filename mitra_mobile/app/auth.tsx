@@ -1,298 +1,119 @@
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import { colors, fonts } from './styles/theme';
 
-import { GOOGLE_WEB_CLIENT_ID } from '@env';
-import auth from '@react-native-firebase/auth';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import { Picker, PickerProps } from '@react-native-picker/picker';
-import React, {
-  useState
-} from 'react';
-import {
-  ActivityIndicator,
-  Image,
-  Platform,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View
-} from 'react-native';
-
-import theme from '../theme';
-
-// You need to configure Google Sign-in first.
-// Follow the instructions here: https://github.com/react-native-google-signin/google-signin
-if (Platform.OS !== 'web') {
-  GoogleSignin.configure({
-    webClientId: GOOGLE_WEB_CLIENT_ID,
-  });
-}
-
-const LANGUAGES = [
-  { code: 'en', name: 'English' },
-  { code: 'es', name: 'Spanish' },
-  { code: 'fr', name: 'French' },
-];
-
-// Wrapper for the Picker component to resolve TypeScript issues
-const MyPicker: React.FC<PickerProps<string>> = (props) => {
-  const PickerComponent = Picker as any;
-  return <PickerComponent {...props} />;
-};
-
-const AuthScreen = () => {
+export default function AuthScreen() {
+  const { t } = useTranslation();
+  const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [language, setLanguage] = useState('en');
-  const [isLoginMode, setIsLoginMode] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-
-  const handleEmailSubmit = async () => {
-    setError(null);
-    if (!email || !password) {
-      setError('Please enter both email and password.');
-      return;
-    }
-    setLoading(true);
-    try {
-      if (isLoginMode) {
-        await auth().signInWithEmailAndPassword(email, password);
-      } else {
-        await auth().createUserWithEmailAndPassword(email, password);
-      }
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const onGoogleButtonPress = async () => {
-    try {
-      setLoading(true);
-      // Check if your device supports Google Play
-      await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-      // Get the users ID token
-      const userInfo: any = await GoogleSignin.signIn();
-      if (!userInfo.idToken) {
-        throw new Error('Google Sign-In failed to return an ID token.');
-      }
-
-      // Create a Google credential with the token
-      const googleCredential = auth.GoogleAuthProvider.credential(userInfo.idToken);
-
-      // Sign-in the user with the credential
-      return auth().signInWithCredential(googleCredential);
-    } catch (error: any) {
-      setError(error.message);
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   return (
     <View style={styles.container}>
-      <Image
-        source={{ uri: 'https://placehold.co/120x120/0b0f1a/00ffff?text=MitraVeda' }}
-        style={styles.logo}
-        resizeMode="contain"
-      />
-      <Text style={styles.header}>MitraVeda</Text>
-      <Text style={styles.tagline}>Begin Your Divine Journey</Text>
-
-      <View style={styles.toggleContainer}>
-        <TouchableOpacity onPress={() => setIsLoginMode(true)}>
-          <Text style={[styles.toggleText, isLoginMode && styles.activeToggle]}>
-            Sign In
-          </Text>
+      <Text style={styles.logo} testID="logo">Mithra Veda</Text>
+      <View style={styles.switchContainer}>
+        <TouchableOpacity testID="signInToggle" onPress={() => setIsSignUp(false)}>
+          <Text style={[styles.switchLabel, !isSignUp && styles.activeSwitch]}>{t('auth.signIn')}</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => setIsLoginMode(false)}>
-          <Text style={[styles.toggleText, !isLoginMode && styles.activeToggle]}>
-            Sign Up
-          </Text>
+        <TouchableOpacity testID="signUpToggle" onPress={() => setIsSignUp(true)}>
+          <Text style={[styles.switchLabel, isSignUp && styles.activeSwitch]}>{t('auth.signUp')}</Text>
         </TouchableOpacity>
       </View>
-
       <TextInput
         style={styles.input}
-        placeholder="Email"
-        placeholderTextColor={theme.colors.muted}
+        placeholder={t('auth.emailPlaceholder')}
+        placeholderTextColor="#aaa"
         value={email}
         onChangeText={setEmail}
-        keyboardType="email-address"
-        autoCapitalize="none"
       />
       <TextInput
         style={styles.input}
-        placeholder="Password"
-        placeholderTextColor={theme.colors.muted}
+        placeholder={t('auth.passwordPlaceholder')}
+        placeholderTextColor="#aaa"
+        secureTextEntry
         value={password}
         onChangeText={setPassword}
-        secureTextEntry
       />
-
-      <View style={styles.pickerContainer}>
-        <Text style={styles.label}>Preferred Language</Text>
-        <MyPicker
-          selectedValue={language}
-          style={Platform.OS === 'ios' ? styles.pickerIOS : styles.pickerAndroid}
-          itemStyle={styles.pickerItem}
-          onValueChange={(itemValue: string) => setLanguage(itemValue)}
-        >
-          {LANGUAGES.map((lang) => (
-            <Picker.Item key={lang.code} label={lang.name} value={lang.code} />
-          ))}
-        </MyPicker>
-      </View>
-
-      {error && <Text style={styles.errorText}>{error}</Text>}
-
-      <TouchableOpacity
-        style={styles.button}
-        onPress={handleEmailSubmit}
-        disabled={loading}
-      >
-        {loading ? (
-          <ActivityIndicator color={theme.colors.background} />
-        ) : (
-          <Text style={styles.buttonText}>
-            {isLoginMode ? 'Sign In' : 'Sign Up'}
-          </Text>
-        )}
+      {isSignUp && (
+        <TextInput
+          style={styles.input}
+          placeholder={t('auth.confirmPasswordPlaceholder')}
+          placeholderTextColor="#aaa"
+          secureTextEntry
+          value={confirmPassword}
+          onChangeText={setConfirmPassword}
+        />
+      )}
+      <TouchableOpacity style={styles.button} testID="authButton">
+        <Text style={styles.buttonText}>{isSignUp ? t('auth.signUp') : t('auth.signIn')}</Text>
       </TouchableOpacity>
-
-      <Text style={styles.orText}>OR</Text>
-
-      <TouchableOpacity
-        style={[styles.button, styles.googleButton]}
-        onPress={onGoogleButtonPress}
-        disabled={loading}
-      >
-        {loading ? (
-          <ActivityIndicator color={theme.colors.background} />
-        ) : (
-          <Text style={[styles.buttonText, styles.googleButtonText]}>
-            Continue with Google
-          </Text>
-        )}
+      <TouchableOpacity>
+        <Text style={styles.forgotPassword}>{t('auth.forgotPassword')}</Text>
       </TouchableOpacity>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    backgroundColor: colors['neo-dark'],
     alignItems: 'center',
-    backgroundColor: theme.colors.background,
-    padding: 20,
+    justifyContent: 'center',
+    padding: 16,
   },
   logo: {
-    width: 120,
-    height: 120,
-    marginBottom: 10,
+    fontSize: 48,
+    fontWeight: 'bold',
+    color: colors.primary,
+    fontFamily: fonts.poppins,
+    marginBottom: 48,
   },
-  header: {
-    color: theme.colors.cyan,
-    fontSize: 28,
-    fontWeight: '600',
-    letterSpacing: 2,
-    fontFamily: theme.fonts.orbitron,
-    marginBottom: 10,
-  },
-  tagline: {
-    fontSize: 18,
-    fontFamily: theme.fonts.rajdhani,
-    color: theme.colors.text,
-    marginBottom: 30,
-  },
-  toggleContainer: {
+  switchContainer: {
     flexDirection: 'row',
-    marginBottom: 20,
-    borderWidth: 1,
-    borderColor: theme.colors.cyan,
-    borderRadius: 8,
-    overflow: 'hidden',
+    alignItems: 'center',
+    marginBottom: 24,
   },
-  toggleText: {
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    color: theme.colors.cyan,
-    fontSize: 16,
-    fontFamily: theme.fonts.rajdhani,
+  switchLabel: {
+    color: colors.text,
+    fontSize: 18,
+    fontFamily: fonts.poppins,
+    marginHorizontal: 16,
   },
-  activeToggle: {
-    backgroundColor: theme.colors.cyan,
-    color: theme.colors.background,
+  activeSwitch: {
+    color: colors.primary,
+    fontWeight: 'bold',
   },
   input: {
     width: '100%',
+    backgroundColor: colors['deep-blue'],
+    color: '#fff',
     padding: 15,
-    marginVertical: 10,
-    borderRadius: 8,
+    borderRadius: 25,
     borderWidth: 1,
-    borderColor: theme.colors.cyan,
-    backgroundColor: theme.colors.panel,
-    color: theme.colors.text,
-    fontSize: 16,
-    fontFamily: theme.fonts.rajdhani,
-  },
-  pickerContainer: {
-    width: '100%',
-    marginVertical: 10,
-  },
-  label: {
-    color: theme.colors.cyan,
-    marginBottom: 10,
-    fontSize: 16,
-    fontFamily: theme.fonts.rajdhani,
-  },
-  pickerAndroid: {
-    backgroundColor: theme.colors.panel,
-    color: theme.colors.text,
-    borderWidth: 1,
-    borderColor: theme.colors.cyan,
-    borderRadius: 8,
-  },
-  pickerIOS: {
-    // iOS picker has a different appearance
-  },
-  pickerItem: {
-    color: Platform.OS === 'ios' ? theme.colors.text : undefined,
-    backgroundColor: theme.colors.panel,
-  },
-  errorText: {
-    color: theme.colors.error,
-    textAlign: 'center',
-    marginVertical: 10,
+    borderColor: colors['accent-3'],
+    fontFamily: fonts.poppins,
+    marginBottom: 16,
   },
   button: {
-    backgroundColor: theme.colors.cyan,
-    padding: 15,
-    borderRadius: 8,
     width: '100%',
+    backgroundColor: colors.primary,
+    padding: 15,
+    borderRadius: 25,
     alignItems: 'center',
-    marginVertical: 10,
+    marginTop: 16,
   },
   buttonText: {
-    color: theme.colors.background,
-    fontSize: 18,
+    color: colors['neo-dark'],
     fontWeight: 'bold',
-    fontFamily: theme.fonts.orbitron,
+    fontSize: 18,
+    fontFamily: fonts.poppins,
   },
-  orText: {
-    color: theme.colors.cyan,
-    marginVertical: 15,
-    fontSize: 16,
-  },
-  googleButton: {
-    backgroundColor: 'white',
-  },
-  googleButtonText: {
-    color: 'black',
+  forgotPassword: {
+    color: colors.primary,
+    marginTop: 16,
+    fontFamily: fonts.poppins,
   },
 });
-
-export default AuthScreen;
