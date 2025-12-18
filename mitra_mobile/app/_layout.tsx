@@ -1,5 +1,5 @@
 import { Stack } from "expo-router";
-import { colors } from "./styles/theme";
+import { colors } from "../constants/theme";
 import "./i18n";
 
 export default function RootLayout() {

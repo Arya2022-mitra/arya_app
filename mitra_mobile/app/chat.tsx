@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { colors, fonts } from './styles/theme';
+import { colors, fonts } from '../constants/theme';
 
 export default function ChatScreen() {
   const { t } = useTranslation();

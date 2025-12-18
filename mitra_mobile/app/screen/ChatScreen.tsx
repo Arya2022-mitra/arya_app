@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { colors, fonts } from '../styles/theme';
+import { colors, fonts } from '../../constants/theme';
 
 interface Message {
   id: string;

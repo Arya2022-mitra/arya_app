@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import ProfileCard from '../components/ProfileCard';
-import { colors, fonts } from '../styles/theme';
+import { colors, fonts } from '../../constants/theme';
 
 // Mock data for profiles
 const mockProfiles = [

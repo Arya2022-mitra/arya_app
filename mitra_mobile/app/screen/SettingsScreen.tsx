@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { TFunction } from 'i18next';
-import { colors, fonts } from '../styles/theme';
+import { colors, fonts } from '../../constants/theme';
 
 interface PlanCardProps {
   name: string;

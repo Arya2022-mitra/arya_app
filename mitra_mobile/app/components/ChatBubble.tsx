@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { colors, fonts } from '../styles/theme';
+import { colors, fonts } from '../../constants/theme';
 
 interface ChatBubbleProps {
   from: 'user' | 'assistant';
