@@ -6,11 +6,13 @@
 
   # Use https://search.nixos.org/packages to find packages
   packages = [
-    # pkgs.go
-    # pkgs.python311
-    # pkgs.python311Packages.pip
-    # pkgs.nodejs_20
-    # pkgs.nodePackages.nodemon
+    pkgs.go
+    pkgs.python311
+    pkgs.python311Packages.pip
+    pkgs.nodejs_20
+    pkgs.jdk17
+    pkgs.android-tools
+    pkgs.nodePackages.nodemon
   ];
 
   # Sets environment variables in the workspace
@@ -25,6 +27,10 @@
     previews = {
       enable = true;
       previews = {
+        android = {
+          command = ["npx" "expo" "run:android" "--port" "$PORT" "--device"];
+          manager = "android";
+        };
         # web = {
         #   # Example: run "npm run dev" with PORT set to IDX's defined port for previews,
         #   # and show it in IDX's web preview panel
