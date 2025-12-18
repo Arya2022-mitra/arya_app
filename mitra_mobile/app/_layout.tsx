@@ -40,7 +40,6 @@ export default function RootLayout() {
         />
         <Stack.Screen name="daily-prediction" options={{ title: "Daily Prediction" }} />
         <Stack.Screen name="education" options={{ title: "Education" }} />
-        <Stack.Screen name="health" options={{ title: "Health" }} />
         <Stack.Screen name="spirituality" options={{ title: "Spirituality" }} />
       </Stack>
       <DrawerSidebar isOpen={isSidebarOpen} onClose={toggleSidebar} />
