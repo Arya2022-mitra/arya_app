@@ -16,6 +16,7 @@ export const colors = {
   subtitle: '#a0f0f0',
   danger: '#e53e3e',
   background: '#040a15',
+  input: '#1e2a3b'
 };
 
 export const fonts = {

@@ -1,22 +1,56 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
+import React, { useState, useRef, useEffect } from 'react';
+import { View, Text, TextInput, StyleSheet, Button, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { colors, fonts } from '../constants/theme';
 
-export default function ChatScreen() {
-  const { t } = useTranslation();
-  const [messages, setMessages] = useState([
-    { id: 1, text: t('chat.welcomeMessage'), sender: 'bot' },
-  ]);
-  const [inputText, setInputText] = useState('');
+interface ChatMessage {
+  from: 'user' | 'assistant';
+  message: string;
+  timestamp: string;
+}
 
-  const handleSend = () => {
-    if (inputText.trim() === '') return;
-    const newMessages = [...messages, { id: messages.length + 1, text: inputText, sender: 'user' }];
-    setMessages(newMessages);
-    setInputText('');
-    // TODO: Add logic to handle bot response
+interface ChatBubbleProps {
+  from: 'user' | 'assistant';
+  message: string;
+  timestamp: string;
+}
+
+const ChatBubble: React.FC<ChatBubbleProps> = ({ from, message, timestamp }) => (
+  <View style={[styles.bubble, from === 'user' ? styles.userBubble : styles.assistantBubble]}>
+    <Text style={styles.messageText}>{message}</Text>
+    <Text style={styles.timestamp}>{timestamp}</Text>
+  </View>
+);
+
+export default function Chat() {
+  const { t } = useTranslation();
+  const [messages, setMessages] = useState<ChatMessage[]>([
+    { from: 'assistant', message: 'Hello! How can I help you today?', timestamp: new Date().toLocaleTimeString() },
+  ]);
+  const [input, setInput] = useState('');
+  const [sending, setSending] = useState(false);
+  const scrollViewRef = useRef<ScrollView>(null);
+
+  const sendMessage = () => {
+    if (input.trim() === '') return;
+
+    const timestamp = new Date().toLocaleTimeString();
+    const newUserMessage: ChatMessage = { from: 'user', message: input, timestamp };
+    setMessages(prev => [...prev, newUserMessage]);
+    setInput('');
+    setSending(true);
+
+    // Simulate assistant response
+    setTimeout(() => {
+      const assistantResponse: ChatMessage = { from: 'assistant', message: `I received your message: "${input}"`, timestamp: new Date().toLocaleTimeString() };
+      setMessages(prev => [...prev, assistantResponse]);
+      setSending(false);
+    }, 1000);
   };
+
+  useEffect(() => {
+    scrollViewRef.current?.scrollToEnd({ animated: true });
+  }, [messages]);
 
   return (
     <KeyboardAvoidingView
@@ -24,30 +58,25 @@ export default function ChatScreen() {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
     >
-      <ScrollView style={styles.messagesContainer}>
-        {messages.map((message) => (
-          <View
-            key={message.id}
-            style={[
-              styles.messageBubble,
-              message.sender === 'bot' ? styles.botBubble : styles.userBubble,
-            ]}
-          >
-            <Text style={styles.messageText}>{message.text}</Text>
-          </View>
+      <Text style={styles.header}>🔮 MitraVeda Chat – Divine Guidance</Text>
+      <ScrollView 
+        style={styles.messagesContainer}
+        ref={scrollViewRef}
+        onContentSizeChange={() => scrollViewRef.current?.scrollToEnd({ animated: true })}
+      >
+        {messages.map((msg, idx) => (
+          <ChatBubble key={idx} from={msg.from} message={msg.message} timestamp={msg.timestamp} />
         ))}
+        {sending && <Text style={styles.processingText}>{t('chat.processing')}</Text>}
       </ScrollView>
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
+          value={input}
+          onChangeText={setInput}
           placeholder={t('chat.inputPlaceholder')}
-          placeholderTextColor="#aaa"
-          value={inputText}
-          onChangeText={setInputText}
         />
-        <TouchableOpacity style={styles.sendButton} onPress={handleSend}>
-          <Text style={styles.sendButtonText}>{t('chat.send')}</Text>
-        </TouchableOpacity>
+        <Button title={t('chat.send')} onPress={sendMessage} disabled={sending} />
       </View>
     </KeyboardAvoidingView>
   );
@@ -57,58 +86,62 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors['neo-dark'],
-    padding: 16,
+  },
+  header: {
+    padding: 24,
+    textAlign: 'center',
+    fontFamily: 'orbitron',
+    fontSize: 18,
+    color: colors['neon-cyan'],
+    borderBottomWidth: 1,
+    borderBottomColor: colors.accent,
   },
   messagesContainer: {
     flex: 1,
-    marginBottom: 16,
+    padding: 16,
   },
-  messageBubble: {
+  bubble: {
+    padding: 12,
     borderRadius: 20,
-    padding: 15,
-    marginBottom: 10,
+    marginBottom: 12,
     maxWidth: '80%',
   },
-  botBubble: {
-    backgroundColor: colors['card-dark'],
-    alignSelf: 'flex-start',
-    borderBottomLeftRadius: 0,
-  },
   userBubble: {
-    backgroundColor: colors.primary,
+    backgroundColor: colors['neon-cyan'],
     alignSelf: 'flex-end',
-    borderBottomRightRadius: 0,
+  },
+  assistantBubble: {
+    backgroundColor: colors.input,
+    alignSelf: 'flex-start',
   },
   messageText: {
-    color: '#fff',
-    fontFamily: fonts.poppins,
-    fontSize: 16,
+    color: colors.text,
+  },
+  timestamp: {
+    color: colors.text,
+    fontSize: 10,
+    alignSelf: 'flex-end',
+    marginTop: 4,
+  },
+  processingText: {
+    textAlign: 'center',
+    fontStyle: 'italic',
+    color: colors['neon-cyan'],
+    fontSize: 14,
   },
   inputContainer: {
     flexDirection: 'row',
+    padding: 16,
+    borderTopWidth: 1,
+    borderTopColor: colors.accent,
     alignItems: 'center',
   },
   input: {
     flex: 1,
-    backgroundColor: colors['deep-blue'],
-    color: '#fff',
-    padding: 15,
-    borderRadius: 25,
-    borderWidth: 1,
-    borderColor: colors['accent-3'],
-    fontFamily: fonts.poppins,
-    marginRight: 10,
-  },
-  sendButton: {
-    backgroundColor: colors.primary,
-    paddingVertical: 15,
-    paddingHorizontal: 25,
-    borderRadius: 25,
-  },
-  sendButtonText: {
-    color: colors['neo-dark'],
-    fontWeight: 'bold',
-    fontSize: 16,
-    fontFamily: fonts.poppins,
+    backgroundColor: colors.input,
+    color: colors.text,
+    padding: 12,
+    borderRadius: 20,
+    marginRight: 16,
   },
 });
