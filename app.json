@@ -1,0 +1,11 @@
+{
+  "plugins": [
+    "expo-secure-store"
+  ],
+  "android": {
+    "package": "com.arya99999.arya_app"
+  },
+  "ios": {
+    "bundleIdentifier": "com.arya99999.arya-app"
+  }
+}
