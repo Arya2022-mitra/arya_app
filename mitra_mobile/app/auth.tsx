@@ -1,7 +1,12 @@
+
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, Button, Image, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Button, Image, TouchableOpacity, Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { useTranslation } from 'react-i18next';
+import { useRouter } from 'expo-router';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
+import { authInstance as auth } from '../firebaseConfig';
+import { useSession } from '../shared/context/SessionContext';
 import { colors, fonts } from '../constants/theme';
 
 // Add a list of languages
@@ -22,10 +27,41 @@ const LANGUAGES = [
 
 export default function Auth() {
   const { t } = useTranslation();
+  const router = useRouter();
+  const { login, isLoading } = useSession();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [language, setLanguage] = useState('en');
   const [isLoginMode, setIsLoginMode] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleAuth = async () => {
+    setError(null);
+    if (!email || !password) {
+      setError("Please enter both email and password.");
+      return;
+    }
+
+    try {
+      let userCredential;
+      if (isLoginMode) {
+        userCredential = await signInWithEmailAndPassword(auth, email, password);
+      } else {
+        userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      }
+
+      const user = userCredential.user;
+      if (user) {
+        const idToken = await user.getIdToken();
+        await login(idToken, user.refreshToken);
+        router.replace('/'); // Redirect to home on successful login/signup
+      }
+    } catch (err: any) {
+      setError(err.message);
+      Alert.alert('Authentication Failed', err.message);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -54,6 +90,7 @@ export default function Auth() {
       <TextInput
         style={styles.input}
         placeholder="Email"
+        placeholderTextColor={colors.text}
         value={email}
         onChangeText={setEmail}
         keyboardType="email-address"
@@ -62,31 +99,25 @@ export default function Auth() {
       <TextInput
         style={styles.input}
         placeholder="Password"
+        placeholderTextColor={colors.text}
         value={password}
         onChangeText={setPassword}
         secureTextEntry
       />
 
-      <Picker
-        selectedValue={language}
-        style={styles.picker}
-        onValueChange={(itemValue) => setLanguage(itemValue)}
-      >
-        {LANGUAGES.map((lang: { code: string; name: string }) => (
-          <Picker.Item key={lang.code} label={lang.name} value={lang.code} />
-        ))}
-      </Picker>
+      {error && <Text style={styles.errorText}>{error}</Text>}
 
       <Button
-        title={isLoginMode ? "Sign In" : "Sign Up"}
-        onPress={() => {}}
+        title={isLoading ? "Loading..." : (isLoginMode ? "Sign In" : "Sign Up")}
+        onPress={handleAuth}
+        disabled={isLoading}
       />
 
       <Text style={styles.orText}>OR</Text>
 
       <Button
         title="Continue with Google"
-        onPress={() => {}}
+        onPress={() => Alert.alert("Coming Soon!", "Google Sign-In is not yet implemented.")}
       />
     </View>
   );
@@ -144,15 +175,14 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     fontFamily: fonts.poppins,
   },
-  picker: {
-    backgroundColor: colors.input,
-    color: colors.text,
-    borderRadius: 8,
-    marginBottom: 16,
-  },
   orText: {
     color: colors.text,
     textAlign: 'center',
     marginVertical: 16,
   },
+  errorText: {
+    color: colors.danger,
+    textAlign: 'center',
+    marginBottom: 10,
+  }
 });

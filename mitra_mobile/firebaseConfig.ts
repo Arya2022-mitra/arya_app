@@ -1,8 +1,11 @@
 import { getApp, getApps, initializeApp, type FirebaseApp } from 'firebase/app';
+import { getAuth, type Auth } from 'firebase/auth';
 
 declare global {
   // eslint-disable-next-line no-var
   var __FIREBASE_APP__: FirebaseApp | undefined;
+  // eslint-disable-next-line no-var
+  var __FIREBASE_AUTH__: Auth | undefined;
 }
 
 const firebaseConfig = {
@@ -16,6 +19,7 @@ const firebaseConfig = {
 };
 
 let firebaseApp: FirebaseApp | null = null;
+let auth: Auth | null = null;
 
 export function getFirebaseApp(): FirebaseApp {
   if (firebaseApp) return firebaseApp;
@@ -38,5 +42,26 @@ export function getFirebaseApp(): FirebaseApp {
 
   return firebaseApp;
 }
+
+export function getFirebaseAuth(): Auth {
+    if (auth) return auth;
+
+    const globalAuth = typeof globalThis !== 'undefined' ? globalThis.__FIREBASE_AUTH__ : undefined;
+    if(globalAuth) {
+        auth = globalAuth;
+        return auth;
+    }
+
+    auth = getAuth(getFirebaseApp());
+
+    if (typeof globalThis !== 'undefined') {
+        globalThis.__FIREBASE_AUTH__ = auth;
+    }
+
+    return auth;
+}
+
+export const app = getFirebaseApp();
+export const authInstance = getFirebaseAuth();
 
 export { firebaseConfig };

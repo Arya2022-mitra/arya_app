@@ -1,7 +1,9 @@
 
-import React, { useMemo, useState, useEffect } from 'react';
-import { ScrollView, View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import React, { useMemo, useState, useEffect, useCallback } from 'react';
+import { ScrollView, View, Text, StyleSheet, Image, TouchableOpacity, RefreshControl } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { useSession } from '../shared/context/SessionContext';
+import { fetchApi } from '../lib/fetchApi';
 import { colors, fonts } from '../constants/theme';
 import AiSummary from './components/daily-prediction/AiSummary';
 import QuickDecisions from './components/daily-prediction/QuickDecisions';
@@ -12,7 +14,7 @@ import CurrentTimeWindow from './components/daily-prediction/CurrentTimeWindow';
 // Define the types for our data
 interface TimeWindow {
   title: string;
-  time: string;
+  time: string; // e.g., "08:00 AM - 10:00 AM"
   category: string;
   score: number;
   interpretation: string;
@@ -21,38 +23,90 @@ interface TimeWindow {
   tara: string;
 }
 
-const mockDailyData = {
-  summary: "Today's cosmic energies suggest a focus on introspection and personal growth. It's a favorable time for planning and strategizing, but less so for initiating new ventures. Pay attention to your intuition.",
+interface QuickDecision {
+    answer: 'YES' | 'NO' | 'MAYBE';
+    reason: string;
+}
+
+interface DailyPredictionResponse {
+  summary: string;
   quickDecisions: {
-    takeNewInitiative: { answer: 'NO', reason: 'The stars indicate a period of reflection, not action. New beginnings are best postponed.' },
-    giveAskMoney: { answer: 'YES', reason: 'Financial matters are favored, but proceed with caution and clarity.' },
-    talkWithStrangers: { answer: 'NO', reason: 'Communication may be fraught with misunderstandings today. Stick to familiar company.' },
-  },
-  timeWindows: [
-    { title: 'Window of Opportunity', time: '08:00 AM - 10:00 AM', category: 'Productive', score: 85, interpretation: 'A highly favorable period for tackling difficult tasks and making progress on your goals.', practical: 'Use this time for focused work and important meetings.', pakshi: 'Ruling', tara: 'Sampat' },
-    { title: 'Period of Caution', time: '02:30 PM - 04:00 PM', category: 'Challenging', score: 45, interpretation: 'You may encounter obstacles and communication breakdowns. Patience is key.', practical: 'Avoid making important decisions or having sensitive conversations.', pakshi: 'Eating', tara: 'Vipat' },
-    { title: 'Neutral Zone', time: '06:00 PM - 07:30 PM', category: 'Neutral', score: 65, interpretation: 'A relatively stable period with no major positive or negative influences. Good for routine tasks.', practical: 'Use this time for errands, chores, or other everyday activities.', pakshi: 'Walking', tara: 'Kshema' },
-  ],
-  specialMuhurtas: [
-    { label: 'Rahu Kalam', time: '10:30 AM - 12:00 PM', impact: 'Inauspicious' },
-    { label: 'Yamagandam', time: '01:30 PM - 03:00 PM', impact: 'Avoid new beginnings' },
-    { label: 'Abhijit Muhurtha', time: '12:00 PM - 12:45 PM', impact: 'Highly Favorable' },
-  ],
+    takeNewInitiative: QuickDecision;
+    giveAskMoney: QuickDecision;
+    talkWithStrangers: QuickDecision;
+  };
+  timeWindows: TimeWindow[];
+  specialMuhurtas: {
+    label: string;
+    time: string;
+    impact: string;
+  }[];
+}
+
+// Function to find the current time window
+const findCurrentTimeWindow = (windows: TimeWindow[]): TimeWindow | null => {
+    const now = new Date();
+    for (const window of windows) {
+        const [startTime, endTime] = window.time.split(' - ').map(t => {
+            const [time, modifier] = t.split(' ');
+            let [hours, minutes] = time.split(':').map(Number);
+            if (modifier === 'PM' && hours < 12) hours += 12;
+            if (modifier === 'AM' && hours === 12) hours = 0;
+            const date = new Date();
+            date.setHours(hours, minutes, 0, 0);
+            return date;
+        });
+
+        if (now >= startTime && now <= endTime) {
+            return window;
+        }
+    }
+    return null;
 };
 
 export default function DailyPredictionPage() {
   const { t } = useTranslation();
-  const [dailyData, setDailyData] = useState(mockDailyData);
-  const [loadingData, setLoadingData] = useState(false);
+  const { profile, token } = useSession();
+  const [dailyData, setDailyData] = useState<DailyPredictionResponse | null>(null);
+  const [loadingData, setLoadingData] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [currentTimeWindow, setCurrentTimeWindow] = useState<TimeWindow | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const loadPredictions = useCallback(async () => {
+    if (!profile || !token) {
+      setError("You must be logged in to view predictions.");
+      setLoadingData(false);
+      return;
+    }
+
+    setLoadingData(true);
+    setError(null);
+
+    const { ok, data, error: apiError } = await fetchApi<DailyPredictionResponse>(
+      `/api/daily-prediction/${profile.id}`
+    );
+
+    if (ok && data) {
+      setDailyData(data);
+    } else {
+      setError(apiError || 'Failed to load predictions.');
+    }
+    setLoadingData(false);
+  }, [profile, token]);
 
   useEffect(() => {
-    // In a real application, you would determine the current time window based on the current time.
-    // For this example, we'll just select the first time window.
-    if (dailyData.timeWindows.length > 0) {
-      setCurrentTimeWindow(dailyData.timeWindows[0]);
-    }
+    loadPredictions();
+  }, [loadPredictions]);
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await loadPredictions();
+    setRefreshing(false);
+  }, [loadPredictions]);
+
+  const currentTimeWindow = useMemo(() => {
+      if (!dailyData) return null;
+      return findCurrentTimeWindow(dailyData.timeWindows);
   }, [dailyData]);
 
   const todayLabel = useMemo(() => {
@@ -68,35 +122,37 @@ export default function DailyPredictionPage() {
   }, []);
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView 
+      style={styles.container}
+      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+    >
       <View style={styles.header}>
         <Image source={require('../assets/images/logo.png')} style={styles.logo} />
-        <Text style={styles.title}>{t('dailyPrediction.hero.title', { name: 'User' })}</Text>
+        <Text style={styles.title}>{t('dailyPrediction.hero.title', { name: profile?.first_name || 'User' })}</Text>
         <Text style={styles.subtitle}>{t('dailyPrediction.hero.subtitle')}</Text>
         <Text style={styles.dateLabel}>{todayLabel}</Text>
-        <TouchableOpacity style={styles.refreshButton} onPress={() => {}}>
-          <Text style={styles.refreshButtonText}>Refresh Predictions</Text>
-        </TouchableOpacity>
       </View>
 
       <View style={styles.contentContainer}>
-        <CurrentTimeWindow window={currentTimeWindow} />
-        <AiSummary summary={dailyData.summary} loading={loadingData} error={error} />
-        <QuickDecisions decisions={dailyData.quickDecisions} />
+        {dailyData && <CurrentTimeWindow window={currentTimeWindow} />}
+        <AiSummary summary={dailyData?.summary || ''} loading={loadingData} error={error} />
+        {dailyData && <QuickDecisions decisions={dailyData.quickDecisions} />}
 
         <View style={styles.noteContainer}>
           <Text style={styles.noteTitle}>{t('dailyPrediction.note.title')}</Text>
           <Text style={styles.noteMessage}>{t('dailyPrediction.note.message')}</Text>
         </View>
 
-        <SpecialMuhurtas muhurtas={dailyData.specialMuhurtas} />
+        {dailyData && <SpecialMuhurtas muhurtas={dailyData.specialMuhurtas} />}
 
-        <View style={styles.timeWindowsContainer}>
-          <Text style={styles.sectionTitle}>Time Windows</Text>
-          {dailyData.timeWindows.map((window, index) => (
-            <TimeWindowCard key={index} window={window} />
-          ))}
-        </View>
+        {dailyData && (
+            <View style={styles.timeWindowsContainer}>
+                <Text style={styles.sectionTitle}>Time Windows</Text>
+                {dailyData.timeWindows.map((window, index) => (
+                    <TimeWindowCard key={index} window={window} />
+                ))}
+            </View>
+        )}
       </View>
     </ScrollView>
   );
@@ -138,17 +194,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 8,
     fontFamily: fonts.poppins,
-  },
-  refreshButton: {
-    marginTop: 16,
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderWidth: 1,
-    borderColor: colors['neon-cyan'],
-    borderRadius: 20,
-  },
-  refreshButtonText: {
-    color: colors['neon-cyan'],
   },
   contentContainer: {
     paddingHorizontal: 16,
