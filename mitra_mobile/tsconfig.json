@@ -8,15 +8,8 @@
     "forceConsistentCasingInFileNames": true,
     "jsx": "react-native",
     "resolveJsonModule": true,
-    "allowImportingTsExtensions": true,
-    "noEmit": true
+    "noEmit": true,
+    "allowJs": false
   },
-  "exclude": [
-    "node_modules"
-  ],
-  "include": [
-    "**/*.ts",
-    "**/*.tsx"
-  ],
   "extends": "expo/tsconfig.base"
 }
