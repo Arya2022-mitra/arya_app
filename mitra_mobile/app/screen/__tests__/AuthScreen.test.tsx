@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, fireEvent, within } from '@testing-library/react-native';
 import AuthScreen from '../../auth';
-import i18n from '../../i18n';
+import i18n from '../../i18n.config';
 
 // Mocking expo-router
 jest.mock('expo-router', () => ({

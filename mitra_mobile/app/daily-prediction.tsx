@@ -2,12 +2,12 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { ScrollView, View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { colors, fonts } from '../constants/theme.js';
-import AiSummary from './components/daily-prediction/AiSummary.js';
-import QuickDecisions from './components/daily-prediction/QuickDecisions.js';
-import TimeWindowCard from './components/daily-prediction/TimeWindowCard.js';
-import SpecialMuhurtas from './components/daily-prediction/SpecialMuhurtas.js';
-import CurrentTimeWindow from './components/daily-prediction/CurrentTimeWindow.js';
+import { colors, fonts } from '../constants/theme';
+import AiSummary from './components/daily-prediction/AiSummary';
+import QuickDecisions from './components/daily-prediction/QuickDecisions';
+import TimeWindowCard from './components/daily-prediction/TimeWindowCard';
+import SpecialMuhurtas from './components/daily-prediction/SpecialMuhurtas';
+import CurrentTimeWindow from './components/daily-prediction/CurrentTimeWindow';
 
 // Define the types for our data
 interface TimeWindow {
