@@ -1,5 +1,7 @@
 import { getApp, getApps, initializeApp, type FirebaseApp } from 'firebase/app';
-import { getAuth, type Auth } from 'firebase/auth';
+import { getAuth, initializeAuth, getReactNativePersistence, type Auth } from 'firebase/auth';
+import { Platform } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 declare global {
   // eslint-disable-next-line no-var
@@ -52,7 +54,13 @@ export function getFirebaseAuth(): Auth {
         return auth;
     }
 
-    auth = getAuth(getFirebaseApp());
+    if (Platform.OS !== 'web') {
+        auth = initializeAuth(getFirebaseApp(), {
+            persistence: getReactNativePersistence(AsyncStorage)
+        });
+    } else {
+        auth = getAuth(getFirebaseApp());
+    }
 
     if (typeof globalThis !== 'undefined') {
         globalThis.__FIREBASE_AUTH__ = auth;
