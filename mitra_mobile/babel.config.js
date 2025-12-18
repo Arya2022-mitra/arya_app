@@ -15,6 +15,16 @@ module.exports = function (api) {
           allowUndefined: true,
         },
       ],
+      [
+        'module-resolver',
+        {
+          root: ['./'],
+          alias: {
+            '@app': './app',
+            '@public': './public',
+          },
+        },
+      ],
     ],
   };
 };

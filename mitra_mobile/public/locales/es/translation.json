@@ -1,0 +1,12 @@
+{
+  "dailyPrediction": {
+    "hero": {
+      "title": "Predicciones de hoy para {{name}}",
+      "subtitle": "Basado en tu carta astral"
+    },
+    "note": {
+      "title": "Una nota de tu astrólogo",
+      "message": "Estas predicciones se basan en las posiciones planetarias y tu carta astral. Están destinadas a ser una guía, no un veredicto final. Usa tu intuición y sabiduría para tomar las mejores decisiones por ti mismo."
+    }
+  }
+}

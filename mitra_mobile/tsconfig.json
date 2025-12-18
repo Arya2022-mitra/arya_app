@@ -9,7 +9,13 @@
     "jsx": "react-native",
     "resolveJsonModule": true,
     "noEmit": true,
-    "allowJs": false
+    "allowJs": false,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "paths": {
+      "@app/*": ["app/*"],
+      "@public/*": ["public/*"]
+    }
   },
   "extends": "expo/tsconfig.base"
 }

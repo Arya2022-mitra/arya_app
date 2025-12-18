@@ -1,0 +1,15 @@
+{
+  "dailyPrediction": {
+    "hero": {
+      "title": "Ramalan Hari Ini untuk {{name}}",
+      "subtitle": "Berdasarkan carta kelahiran anda"
+    },
+    "note": {
+      "title": "Nota dari Ahli Nujum Anda",
+      "message": "Ramalan ini berdasarkan kedudukan planet dan carta kelahiran anda. Ia bertujuan untuk menjadi panduan, bukan keputusan muktamad. Gunakan gerak hati dan kebijaksanaan anda untuk membuat keputusan terbaik untuk diri sendiri."
+    }
+  },
+  "health": {
+    "title": "Kesihatan"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "dailyPrediction": {
+    "hero": {
+      "title": "Today's Predictions for {{name}}",
+      "subtitle": "Based on your birth chart"
+    },
+    "note": {
+      "title": "A Note from Your Astrologer",
+      "message": "These predictions are based on planetary positions and your birth chart. They are meant to be a guide, not a final verdict. Use your intuition and wisdom to make the best decisions for yourself."
+    }
+  }
+}

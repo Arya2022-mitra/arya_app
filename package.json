@@ -2,5 +2,8 @@
   "dependencies": {
     "@react-native-picker/picker": "^2.11.4",
     "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "babel-plugin-module-resolver": "^5.0.2"
   }
 }
