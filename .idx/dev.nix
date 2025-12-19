@@ -13,6 +13,7 @@
     pkgs.jdk17
     pkgs.android-tools
     pkgs.nodePackages.nodemon
+    pkgs.sudo
   ];
 
   # Sets environment variables in the workspace
@@ -28,7 +29,9 @@
       enable = true;
       previews = {
         android = {
-          command = ["npx" "expo" "run:android" "--port" "$PORT" "--device"];
+          # Run preview inside the mitra_mobile directory so Expo operates on the mobile project,
+          # not the repository root (prevents creation of a top-level `android` folder).
+          command = [ "bash" "-lc" "cd mitra_mobile && npx expo run:android --port $PORT --device" ];
           manager = "android";
         };
         # web = {
