@@ -2,7 +2,8 @@ apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
 
-def hermesEnabled = project.hasProperty('hermesEnabled') ? project.property('hermesEnabled').toBoolean() : false
+project.ext.hermesEnabled = project.hasProperty('hermesEnabled') ? project.property('hermesEnabled').toBoolean() : false
+
 def projectRoot = rootDir.getAbsoluteFile().getParentFile().getAbsolutePath()
 
 /**
@@ -96,7 +97,8 @@ android {
         versionCode 1
         versionName "1.0.0"
 
-        buildConfigField "String", "REACT_NATIVE_RELEASE_LEVEL", ""${findProperty('reactNativeReleaseLevel') ?: 'stable'}""
+        def reactNativeReleaseLevel = findProperty('reactNativeReleaseLevel') ?: "stable"
+        buildConfigField "String", "REACT_NATIVE_RELEASE_LEVEL", "\"$reactNativeReleaseLevel\""
     }
     signingConfigs {
         debug {
@@ -175,7 +177,7 @@ dependencies {
         }
     }
 
-    if (hermesEnabled) {
+    if (project.ext.hermesEnabled) {
         implementation("com.facebook.react:hermes-android")
     } else {
         implementation jscFlavor
