@@ -20,7 +20,8 @@ declare global {
   var __FIREBASE_AUTH__: Auth | undefined;
 }
 
-const firebaseConfig = {
+// Validate required environment variables
+const requiredEnvVars = {
   apiKey: FIREBASE_API_KEY,
   authDomain: FIREBASE_AUTH_DOMAIN,
   projectId: FIREBASE_PROJECT_ID,
@@ -28,6 +29,28 @@ const firebaseConfig = {
   messagingSenderId: FIREBASE_MESSAGING_SENDER_ID,
   appId: FIREBASE_APP_ID,
   measurementId: FIREBASE_MEASUREMENT_ID,
+};
+
+// Check for missing environment variables
+const missingVars = Object.entries(requiredEnvVars)
+  .filter(([_, value]) => !value)
+  .map(([key]) => `FIREBASE_${key.replace(/([A-Z])/g, '_$1').toUpperCase()}`);
+
+if (missingVars.length > 0) {
+  console.error(
+    `Missing required Firebase environment variables: ${missingVars.join(', ')}. ` +
+    'Please copy .env.example to .env and configure your Firebase credentials.'
+  );
+}
+
+const firebaseConfig = {
+  apiKey: requiredEnvVars.apiKey || '',
+  authDomain: requiredEnvVars.authDomain || '',
+  projectId: requiredEnvVars.projectId || '',
+  storageBucket: requiredEnvVars.storageBucket || '',
+  messagingSenderId: requiredEnvVars.messagingSenderId || '',
+  appId: requiredEnvVars.appId || '',
+  measurementId: requiredEnvVars.measurementId || '',
 };
 
 let firebaseApp: FirebaseApp | null = null;
