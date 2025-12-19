@@ -1,7 +1,9 @@
 // web/lib/api.ts
-const DEFAULT_API_BASE = 'https://arya-production-e42c.up.railway.app';
+const rawApiBase = process.env.EXPO_PUBLIC_API_URL || process.env.NEXT_PUBLIC_API_URL;
 
-const rawApiBase = DEFAULT_API_BASE;
+if (!rawApiBase) {
+  throw new Error('API URL is not defined. Please set EXPO_PUBLIC_API_URL or NEXT_PUBLIC_API_URL in your environment.');
+}
 
 /**
  * Validate and normalize the API base URL.
