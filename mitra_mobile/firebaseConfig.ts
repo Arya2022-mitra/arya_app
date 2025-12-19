@@ -3,6 +3,15 @@ import { getAuth, initializeAuth, type Auth } from 'firebase/auth';
 import { getReactNativePersistence } from 'firebase/auth/react-native';
 import { Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {
+  FIREBASE_API_KEY,
+  FIREBASE_AUTH_DOMAIN,
+  FIREBASE_PROJECT_ID,
+  FIREBASE_STORAGE_BUCKET,
+  FIREBASE_MESSAGING_SENDER_ID,
+  FIREBASE_APP_ID,
+  FIREBASE_MEASUREMENT_ID,
+} from '@env';
 
 declare global {
   // eslint-disable-next-line no-var
@@ -11,14 +20,44 @@ declare global {
   var __FIREBASE_AUTH__: Auth | undefined;
 }
 
+// Validate required environment variables
+const requiredEnvVars = {
+  apiKey: FIREBASE_API_KEY,
+  authDomain: FIREBASE_AUTH_DOMAIN,
+  projectId: FIREBASE_PROJECT_ID,
+  storageBucket: FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: FIREBASE_MESSAGING_SENDER_ID,
+  appId: FIREBASE_APP_ID,
+  measurementId: FIREBASE_MEASUREMENT_ID,
+};
+
+// Check for missing environment variables
+const missingVars = Object.entries(requiredEnvVars)
+  .filter(([_, value]) => !value)
+  .map(([key]) => {
+    // Convert camelCase to SNAKE_CASE: apiKey -> API_KEY, authDomain -> AUTH_DOMAIN
+    const snakeCase = key
+      .replace(/([A-Z])/g, '_$1')
+      .replace(/^_/, '') // Remove leading underscore
+      .toUpperCase();
+    return `FIREBASE_${snakeCase}`;
+  });
+
+if (missingVars.length > 0) {
+  console.error(
+    `Missing required Firebase environment variables: ${missingVars.join(', ')}. ` +
+    'Please copy .env.example to .env and configure your Firebase credentials.'
+  );
+}
+
 const firebaseConfig = {
-  apiKey: 'AIzaSyCP-NGVQC5iNQcoSHZGj0eKOjhKFFqZ6Q8',
-  authDomain: 'mitraveda-c1c03.firebaseapp.com',
-  projectId: 'mitraveda-c1c03',
-  storageBucket: 'mitraveda-c1c03.appspot.com',
-  messagingSenderId: '230188375703',
-  appId: '1:230188375703:web:28af92dbe94651321c53d2',
-  measurementId: 'G-MT17PVPXLQ',
+  apiKey: requiredEnvVars.apiKey || '',
+  authDomain: requiredEnvVars.authDomain || '',
+  projectId: requiredEnvVars.projectId || '',
+  storageBucket: requiredEnvVars.storageBucket || '',
+  messagingSenderId: requiredEnvVars.messagingSenderId || '',
+  appId: requiredEnvVars.appId || '',
+  measurementId: requiredEnvVars.measurementId || '',
 };
 
 let firebaseApp: FirebaseApp | null = null;
