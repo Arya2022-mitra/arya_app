@@ -12,6 +12,8 @@ const firebaseConfig = {
     measurementId: process.env.EXPO_PUBLIC_FIREBASE_MEASUREMENT_ID || process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
+console.log('Firebase Config:', firebaseConfig);
+
 // Fail-fast if required public variables are missing
 const requiredVars = ['apiKey', 'authDomain', 'projectId'];
 const missingVars = requiredVars.filter(key => !(firebaseConfig as any)[key]);
