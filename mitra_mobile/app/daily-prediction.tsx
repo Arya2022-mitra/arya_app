@@ -2,6 +2,7 @@
 import React, { useMemo, useState, useEffect, useCallback } from 'react';
 import { ScrollView, View, Text, StyleSheet, Image, TouchableOpacity, RefreshControl } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import * as SecureStore from 'expo-secure-store';
 import { useSession } from '../shared/context/SessionContext';
 import { fetchApi } from '../lib/fetchApi';
 import { colors, fonts } from '../constants/theme';
@@ -108,6 +109,12 @@ export default function DailyPredictionPage() {
       if (!dailyData) return null;
       return findCurrentTimeWindow(dailyData.timeWindows);
   }, [dailyData]);
+
+  useEffect(() => {
+    if (currentTimeWindow) {
+      SecureStore.setItemAsync('currentTimeWindow', JSON.stringify(currentTimeWindow));
+    }
+  }, [currentTimeWindow]);
 
   const todayLabel = useMemo(() => {
     try {

@@ -7,9 +7,10 @@ interface AiSummaryProps {
   summary: string;
   loading: boolean;
   error: string | null;
+  narration?: string;
 }
 
-const AiSummary: React.FC<AiSummaryProps> = ({ summary, loading, error }) => {
+const AiSummary: React.FC<AiSummaryProps> = ({ summary, loading, error, narration }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.sectionTitle}>AI Summary</Text>
@@ -18,6 +19,7 @@ const AiSummary: React.FC<AiSummaryProps> = ({ summary, loading, error }) => {
       {!loading && !error && (
         <View style={styles.aiSummaryContainer}>
           <Text style={styles.aiSummaryText}>{summary}</Text>
+          {narration && <Text style={styles.narrationText}>{narration}</Text>}
         </View>
       )}
     </View>
@@ -46,6 +48,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: fonts.poppins,
     lineHeight: 24,
+  },
+  narrationText: {
+    color: colors.text,
+    fontSize: 14,
+    fontFamily: fonts.poppins,
+    lineHeight: 22,
+    marginTop: 10,
+    fontStyle: 'italic',
   },
   errorText: {
     color: 'red',

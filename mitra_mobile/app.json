@@ -46,7 +46,8 @@
           }
         }
       ],
-      "expo-secure-store"
+      "expo-secure-store",
+      "expo-widgets"
     ],
     "experiments": {
       "typedRoutes": false,
@@ -57,6 +58,21 @@
       "eas": {
         "projectId": "50a62ab9-5480-469d-a319-446d027b0c21"
       }
-    }
+    },
+    "widgets": [
+      {
+        "name": "CurrentTimeWindowWidget",
+        "label": "Current Time Window",
+        "description": "Displays the current astrological time window.",
+        "backgroundColor": "#000000",
+        "src": "./app/widgets/CurrentTimeWindowWidget.tsx",
+        "ios": {
+          "supportedSizes": [
+            "compact",
+            "expanded"
+          ]
+        }
+      }
+    ]
   }
 }
