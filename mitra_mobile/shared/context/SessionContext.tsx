@@ -6,7 +6,7 @@ import {
   getActiveProfileId, saveActiveProfileId 
 } from '../../lib/secureAuth';
 import { fetchApi } from '../../lib/fetchApi';
-import { signOutGoogle } from '../../app/lib/googleSignIn';
+import { signOutGoogle } from '../../lib/googleSignIn';
 
 interface UserProfile {
   id: string; // Use string for ID to be safe

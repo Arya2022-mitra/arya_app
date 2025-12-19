@@ -1,7 +1,7 @@
 
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import { GoogleAuthProvider, signInWithCredential } from 'firebase/auth';
-import { authInstance } from '../../firebaseConfig';
+import { authInstance } from '../firebaseConfig';
 import { GOOGLE_WEB_CLIENT_ID } from '@env';
 
 GoogleSignin.configure({
@@ -11,9 +11,9 @@ GoogleSignin.configure({
 export const signInWithGoogle = async () => {
   try {
     await GoogleSignin.hasPlayServices();
-    const { idToken } = await GoogleSignin.signIn();
-    if (idToken) {
-      const googleCredential = GoogleAuthProvider.credential(idToken);
+    const { user } = await GoogleSignin.signIn();
+    if (user.idToken) {
+      const googleCredential = GoogleAuthProvider.credential(user.idToken);
       const userCredential = await signInWithCredential(authInstance, googleCredential);
       const firebaseIdToken = await userCredential.user.getIdToken();
       return firebaseIdToken;

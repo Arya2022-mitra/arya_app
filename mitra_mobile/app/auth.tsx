@@ -69,7 +69,7 @@ export default function Auth() {
     setIsGoogleLoading(true);
     try {
       const firebaseIdToken = await signInWithGoogle();
-      await login(firebaseIdToken, null);
+      await login(firebaseIdToken);
       router.replace('/');
     } catch (error: any) {
       Alert.alert('Google Sign-In Failed', error.message);
