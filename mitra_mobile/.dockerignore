@@ -1,0 +1,43 @@
+# .dockerignore
+node_modules
+npm-debug.log
+yarn-error.log
+.expo
+.expo-shared
+dist
+build
+coverage
+
+# Git
+.git
+.gitignore
+
+# Environment
+.env
+.env.local
+google-services.json
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Native builds
+android/build
+android/.gradle
+android/app/build
+ios/build
+ios/Pods
+ios/*.xcworkspace
+
+# Testing
+coverage
+.nyc_output
+
+# Misc
+*.log

@@ -49,6 +49,45 @@ See [../frontend_reference/README.md](../frontend_reference/README.md) for detai
 - For mobile builds: Use EAS Build (cloud service)
 - For web deployment: Docker optional but can be useful
 
+### Docker Usage (Optional)
+
+If you choose to use Docker for web deployment or standardized development environments:
+
+#### Production Web Build
+
+Build and run the production web version:
+
+```bash
+# Build the Docker image
+docker build -t mitra-mobile-web .
+
+# Run the container
+docker run -p 3000:80 mitra-mobile-web
+
+# Or use docker-compose
+docker-compose up mitra-mobile-web
+```
+
+The web app will be available at `http://localhost:3000`
+
+#### Development Environment
+
+Run the development server in Docker:
+
+```bash
+# Start development environment
+docker-compose up mitra-mobile-dev
+
+# Access Expo DevTools at http://localhost:19002
+```
+
+**Note:** For the build to succeed, ensure you have proper Firebase credentials configured. The Docker setup includes:
+- `Dockerfile` - Multi-stage build for production web deployment
+- `Dockerfile.dev` - Development environment
+- `docker-compose.yml` - Orchestration for both environments
+- `.dockerignore` - Excludes unnecessary files from Docker context
+- `nginx.conf` - Production web server configuration
+
 ## Get a fresh project
 
 When you're ready, run:
