@@ -1,23 +1,28 @@
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { getToken, saveToken, clearToken, getRefreshToken, saveRefreshToken } from '../../lib/secureAuth';
+import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
+import {
+  getToken, saveToken, clearToken, 
+  getRefreshToken, saveRefreshToken, 
+  getActiveProfileId, saveActiveProfileId 
+} from '../../lib/secureAuth';
 import { fetchApi } from '../../lib/fetchApi';
 
-// Define the shape of your user profile
 interface UserProfile {
-  id: number;
+  id: string; // Use string for ID to be safe
   first_name: string;
-  // Add other profile fields as needed
+  [key: string]: any; // Allow other profile fields
 }
 
 interface Session {
   token: string | null;
   refreshToken: string | null;
   profile: UserProfile | null;
+  activeProfileId: string | null;
   isLoading: boolean;
   login: (newToken: string, newRefreshToken?: string) => Promise<void>;
   logout: () => Promise<void>;
   refresh: () => Promise<string | null>;
+  setActiveProfile: (profileId: string) => Promise<boolean>;
 }
 
 const SessionContext = createContext<Session | undefined>(undefined);
@@ -38,17 +43,35 @@ export const SessionProvider: React.FC<SessionProviderProps> = ({ children }) =>
   const [token, setToken] = useState<string | null>(null);
   const [refreshToken, setRefreshToken] = useState<string | null>(null);
   const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [activeProfileId, setActiveProfileIdState] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const fetchProfile = async (authToken: string) => {
-    const { ok, data } = await fetchApi<UserProfile>('/api/profile', { // Assuming /api/profile is the endpoint
+  const fetchProfile = useCallback(async (authToken: string, profileId: string) => {
+    // Note: The API endpoint needs to support fetching a specific profile by ID
+    const { ok, data } = await fetchApi<UserProfile>(`/api/profile/${profileId}`, { 
         headers: { Authorization: `Bearer ${authToken}` }
     });
     if (ok && data) {
       setProfile(data);
+      return true;
+    } else {
+      console.error("Failed to fetch profile for ID:", profileId);
+      setProfile(null); // Clear profile if fetch fails
+      return false;
     }
-    return ok && data ? data : null;
-  };
+  }, []);
+
+  const setActiveProfile = useCallback(async (profileId: string): Promise<boolean> => {
+    if (!token) return false;
+    setIsLoading(true);
+    const success = await fetchProfile(token, profileId);
+    if (success) {
+      await saveActiveProfileId(profileId);
+      setActiveProfileIdState(profileId);
+    }
+    setIsLoading(false);
+    return success;
+  }, [token, fetchProfile]);
 
   const login = async (newToken: string, newRefreshToken?: string) => {
     setIsLoading(true);
@@ -58,51 +81,65 @@ export const SessionProvider: React.FC<SessionProviderProps> = ({ children }) =>
         await saveRefreshToken(newRefreshToken);
         setRefreshToken(newRefreshToken);
     }
-    await fetchProfile(newToken);
+    // After login, we don't know the active profile yet. 
+    // Let's try to load it, or the user will have to select one.
+    const lastActiveId = await getActiveProfileId();
+    if(lastActiveId) {
+      await setActiveProfile(lastActiveId);
+    }
     setIsLoading(false);
   };
 
   const logout = async () => {
     setIsLoading(true);
-    await clearToken();
+    await clearToken(); // This will also clear the active profile ID
     setToken(null);
     setProfile(null);
     setRefreshToken(null);
+    setActiveProfileIdState(null);
     setIsLoading(false);
   };
 
   const refresh = async (): Promise<string | null> => {
-    // TODO: Implement the actual token refresh logic here.
-    // This will involve calling the refresh endpoint and getting a new token.
     console.log("Token refresh logic not implemented.");
     return null;
   };
-
 
   useEffect(() => {
     const restoreSession = async () => {
       setIsLoading(true);
       const storedToken = await getToken();
-      const storedRefreshToken = await getRefreshToken();
       if (storedToken) {
         setToken(storedToken);
+        const storedRefreshToken = await getRefreshToken();
         if(storedRefreshToken) setRefreshToken(storedRefreshToken);
-        await fetchProfile(storedToken);
+        
+        const storedProfileId = await getActiveProfileId();
+        if (storedProfileId) {
+          await fetchProfile(storedToken, storedProfileId);
+          setActiveProfileIdState(storedProfileId);
+        }
+      } else {
+          // No token, ensure everything is cleared
+          setProfile(null);
+          setActiveProfileIdState(null);
       }
       setIsLoading(false);
     };
 
     restoreSession();
-  }, []);
+  }, [fetchProfile]);
 
   const value = {
     token,
     refreshToken,
     profile,
+    activeProfileId,
     isLoading,
     login,
     logout,
-    refresh
+    refresh,
+    setActiveProfile,
   };
 
   return (
