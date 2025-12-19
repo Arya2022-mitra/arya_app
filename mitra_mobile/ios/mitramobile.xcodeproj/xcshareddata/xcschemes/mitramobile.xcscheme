@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "aryaapp.app"
-               BlueprintName = "aryaapp"
-               ReferencedContainer = "container:aryaapp.xcodeproj">
+               BuildableName = "mitramobile.app"
+               BlueprintName = "mitramobile"
+               ReferencedContainer = "container:mitramobile.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "aryaappTests.xctest"
-               BlueprintName = "aryaappTests"
-               ReferencedContainer = "container:aryaapp.xcodeproj">
+               BuildableName = "mitramobileTests.xctest"
+               BlueprintName = "mitramobileTests"
+               ReferencedContainer = "container:mitramobile.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "aryaapp.app"
-            BlueprintName = "aryaapp"
-            ReferencedContainer = "container:aryaapp.xcodeproj">
+            BuildableName = "mitramobile.app"
+            BlueprintName = "mitramobile"
+            ReferencedContainer = "container:mitramobile.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "aryaapp.app"
-            BlueprintName = "aryaapp"
-            ReferencedContainer = "container:aryaapp.xcodeproj">
+            BuildableName = "mitramobile.app"
+            BlueprintName = "mitramobile"
+            ReferencedContainer = "container:mitramobile.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

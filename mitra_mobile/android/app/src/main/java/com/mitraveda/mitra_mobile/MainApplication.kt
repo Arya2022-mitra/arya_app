@@ -1,4 +1,4 @@
-package com.aryaapp
+package com.mitraveda.mitra_mobile
 
 import android.app.Application
 import android.content.res.Configuration
