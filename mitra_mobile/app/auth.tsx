@@ -8,6 +8,7 @@ import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'fire
 import { authInstance as auth } from '../firebaseConfig';
 import { useSession } from '../shared/context/SessionContext';
 import { colors, fonts } from '../constants/theme';
+import { signInWithGoogle } from '../lib/googleSignIn';
 
 // Add a list of languages
 const LANGUAGES = [
@@ -35,6 +36,7 @@ export default function Auth() {
   const [language, setLanguage] = useState('en');
   const [isLoginMode, setIsLoginMode] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
   const handleAuth = async () => {
     setError(null);
@@ -60,6 +62,19 @@ export default function Auth() {
     } catch (err: any) {
       setError(err.message);
       Alert.alert('Authentication Failed', err.message);
+    }
+  };
+  
+  const handleGoogleSignIn = async () => {
+    setIsGoogleLoading(true);
+    try {
+      const firebaseIdToken = await signInWithGoogle();
+      await login(firebaseIdToken, null);
+      router.replace('/');
+    } catch (error: any) {
+      Alert.alert('Google Sign-In Failed', error.message);
+    } finally {
+      setIsGoogleLoading(false);
     }
   };
 
@@ -116,8 +131,9 @@ export default function Auth() {
       <Text style={styles.orText}>OR</Text>
 
       <Button
-        title="Continue with Google"
-        onPress={() => Alert.alert("Coming Soon!", "Google Sign-In is not yet implemented.")}
+        title={isGoogleLoading ? "Loading..." : "Continue with Google"}
+        onPress={handleGoogleSignIn}
+        disabled={isGoogleLoading}
       />
     </View>
   );

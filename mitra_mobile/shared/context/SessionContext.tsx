@@ -6,6 +6,7 @@ import {
   getActiveProfileId, saveActiveProfileId 
 } from '../../lib/secureAuth';
 import { fetchApi } from '../../lib/fetchApi';
+import { signOutGoogle } from '../../app/lib/googleSignIn';
 
 interface UserProfile {
   id: string; // Use string for ID to be safe
@@ -73,7 +74,7 @@ export const SessionProvider: React.FC<SessionProviderProps> = ({ children }) =>
     return success;
   }, [token, fetchProfile]);
 
-  const login = async (newToken: string, newRefreshToken?: string) => {
+  const login = async (newToken: string, newRefreshToken?: string | null) => {
     setIsLoading(true);
     await saveToken(newToken);
     setToken(newToken);
@@ -92,6 +93,7 @@ export const SessionProvider: React.FC<SessionProviderProps> = ({ children }) =>
 
   const logout = async () => {
     setIsLoading(true);
+    await signOutGoogle();
     await clearToken(); // This will also clear the active profile ID
     setToken(null);
     setProfile(null);
