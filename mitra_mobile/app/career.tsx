@@ -79,9 +79,9 @@ const AiSummaryDisplay: React.FC<AiSummaryDisplayProps> = ({ summary, loading, e
 
 export default function CareerPage() {
   const { t } = useTranslation();
-  const [careerData, setCareerData] = useState<CareerData>(mockCareerData);
-  const [loadingData, setLoadingData] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [careerData] = useState<CareerData>(mockCareerData);
+  const [loadingData] = useState(false);
+  const [error] = useState<string | null>(null);
 
   const sections = useMemo(() => [
     { title: t('career.summary'), content: careerData.summary },

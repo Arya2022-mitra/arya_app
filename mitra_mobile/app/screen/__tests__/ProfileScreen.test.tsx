@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
-import ProfileScreen from '../ProfileScreen';
+import ProfileScreen from '../../profile';
 import { useRouter } from 'expo-router';
 
 // Mock react-i18next

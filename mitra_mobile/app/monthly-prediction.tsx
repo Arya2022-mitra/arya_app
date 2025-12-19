@@ -32,13 +32,13 @@ interface MonthlySummaryData {
     month_name: string;
     overall_score: number;
     verdict: string;
-    top_domains: Array<{
+    top_domains: {
       name: string;
       display_name: string;
       score: number;
       outlook: string;
       reason_short: string;
-    }>;
+    }[];
     weekly_summary: Record<string, {
       score: number;
       outlook: string;
@@ -73,7 +73,7 @@ export default function MonthlyPredictionPage() {
   const [loadingData, setLoadingData] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
-  const [month, setMonth] = useState<string>(getDefaultMonth);
+  const [month] = useState<string>(getDefaultMonth);
 
   const loadMonthlyPredictions = useCallback(async (forceRefresh = false) => {
     if (!profile || !token) {

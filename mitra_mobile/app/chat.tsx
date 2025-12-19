@@ -1,26 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet, Button, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { colors, fonts } from '../constants/theme';
+import { colors } from '../constants/theme';
+import ChatBubble from './components/ChatBubble';
 
 interface ChatMessage {
   from: 'user' | 'assistant';
   message: string;
   timestamp: string;
 }
-
-interface ChatBubbleProps {
-  from: 'user' | 'assistant';
-  message: string;
-  timestamp: string;
-}
-
-const ChatBubble: React.FC<ChatBubbleProps> = ({ from, message, timestamp }) => (
-  <View style={[styles.bubble, from === 'user' ? styles.userBubble : styles.assistantBubble]}>
-    <Text style={styles.messageText}>{message}</Text>
-    <Text style={styles.timestamp}>{timestamp}</Text>
-  </View>
-);
 
 export default function Chat() {
   const { t } = useTranslation();
@@ -99,29 +87,6 @@ const styles = StyleSheet.create({
   messagesContainer: {
     flex: 1,
     padding: 16,
-  },
-  bubble: {
-    padding: 12,
-    borderRadius: 20,
-    marginBottom: 12,
-    maxWidth: '80%',
-  },
-  userBubble: {
-    backgroundColor: colors['neon-cyan'],
-    alignSelf: 'flex-end',
-  },
-  assistantBubble: {
-    backgroundColor: colors.input,
-    alignSelf: 'flex-start',
-  },
-  messageText: {
-    color: colors.text,
-  },
-  timestamp: {
-    color: colors.text,
-    fontSize: 10,
-    alignSelf: 'flex-end',
-    marginTop: 4,
   },
   processingText: {
     textAlign: 'center',

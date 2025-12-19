@@ -9,9 +9,9 @@ const mockDailyData = {
 
 export default function DailyAlertsPage() {
   const { t } = useTranslation();
-  const [dailyData, setDailyData] = useState(mockDailyData);
-  const [loadingData, setLoadingData] = useState(false);
-  const [error, setError] = useState(null);
+  const [dailyData] = useState(mockDailyData);
+  const [loadingData] = useState(false);
+  const [error] = useState(null);
 
   const todayLabel = useMemo(() => {
     try {

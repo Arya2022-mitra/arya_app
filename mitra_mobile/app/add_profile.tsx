@@ -2,12 +2,10 @@
 import React, { useState } from 'react';
 import { ScrollView, View, Text, TextInput, StyleSheet, Button, Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import { useTranslation } from 'react-i18next';
 import { useRouter } from 'expo-router';
 import { colors, fonts } from '../constants/theme';
 
 export default function AddProfile() {
-  const { t } = useTranslation();
   const router = useRouter();
   
   const [name, setName] = useState('');
@@ -144,7 +142,7 @@ export default function AddProfile() {
 
       <View style={styles.inputContainer}>
         <Text style={styles.label}>Occupation:</Text>
-        <Picker selectedValue={occupation} style={styles.picker} onValueChange={(v) => setOccupation(v)} itemStyle={styles.pickerItem}>
+        <Picker selectedValue={occupation} style={styles.picker} onValueChange={setOccupation} itemStyle={styles.pickerItem}>
             <Picker.Item label="Student" value="Student" />
             <Picker.Item label="Employed" value="Employed" />
             <Picker.Item label="Self-Employed" value="Self-Employed" />

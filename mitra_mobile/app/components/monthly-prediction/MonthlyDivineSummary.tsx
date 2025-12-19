@@ -9,13 +9,13 @@ interface MonthlySummary {
         month_name: string;
         overall_score: number;
         verdict: string;
-        top_domains: Array<{
+        top_domains: {
             name: string;
             display_name: string;
             score: number;
             outlook: string;
             reason_short: string;
-        }>;
+        }[];
         weekly_summary: Record<string, {
             score: number;
             outlook: string;

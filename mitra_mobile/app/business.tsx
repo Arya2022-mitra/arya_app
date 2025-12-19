@@ -58,9 +58,9 @@ const AiSummaryDisplay: React.FC<AiSummaryDisplayProps> = ({ summary, loading, e
 
 export default function BusinessPage() {
   const { t } = useTranslation();
-  const [businessData, setBusinessData] = useState<BusinessData>(mockBusinessData);
-  const [loadingData, setLoadingData] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [businessData] = useState<BusinessData>(mockBusinessData);
+  const [loadingData] = useState(false);
+  const [error] = useState<string | null>(null);
 
   const SECTION_CONFIG = useMemo(() => [
     {

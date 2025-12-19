@@ -1,9 +1,6 @@
 apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
-apply plugin: 'com.google.gms.google-services'
-
-project.ext.hermesEnabled = project.hasProperty('hermesEnabled') ? project.property('hermesEnabled').toBoolean() : false
 
 def projectRoot = rootDir.getAbsoluteFile().getParentFile().getAbsolutePath()
 
@@ -24,7 +21,7 @@ react {
     bundleCommand = "export:embed"
 
     /* Folders */
-     //   The root of your project, i.e. where "package.json" lives. Default is '../../'
+     //   The root of your project, i.e. where "package.json" lives. Default is '../..'
     // root = file("../../")
     //   The folder where the react-native NPM package is. Default is ../../node_modules/react-native
     // reactNativeDir = file("../../node_modules/react-native")
@@ -98,8 +95,7 @@ android {
         versionCode 1
         versionName "1.0.0"
 
-        def reactNativeReleaseLevel = findProperty('reactNativeReleaseLevel') ?: "stable"
-        buildConfigField "String", "REACT_NATIVE_RELEASE_LEVEL", "\"$reactNativeReleaseLevel\""
+        buildConfigField "String", "REACT_NATIVE_RELEASE_LEVEL", "\"${findProperty('reactNativeReleaseLevel') ?: 'stable'}\""
     }
     signingConfigs {
         debug {
@@ -178,7 +174,7 @@ dependencies {
         }
     }
 
-    if (project.ext.hermesEnabled) {
+    if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
     } else {
         implementation jscFlavor

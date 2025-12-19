@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { Modal, View, StyleSheet, TouchableOpacity, Text, ScrollView } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import ProfileList from './ProfileList';

@@ -1,8 +1,6 @@
 
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, Button, Image, TouchableOpacity, Alert } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
-import { useTranslation } from 'react-i18next';
 import { useRouter } from 'expo-router';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 import { authInstance as auth } from '../firebaseConfig';
@@ -10,30 +8,12 @@ import { useSession } from '../shared/context/SessionContext';
 import { colors, fonts } from '../constants/theme';
 import { signInWithGoogle } from '../lib/googleSignIn';
 
-// Add a list of languages
-const LANGUAGES = [
-  { code: 'en', name: 'English' },
-  { code: 'es', name: 'Spanish' },
-  { code: 'fr', name: 'French' },
-  { code: 'de', name: 'German' },
-  { code: 'it', name: 'Italian' },
-  { code: 'pt', name: 'Portuguese' },
-  { code: 'ru', name: 'Russian' },
-  { code: 'ja', name: 'Japanese' },
-  { code: 'ko', name: 'Korean' },
-  { code: 'zh', name: 'Chinese' },
-  { code: 'hi', name: 'Hindi' },
-  { code: 'ar', name: 'Arabic' },
-];
-
 export default function Auth() {
-  const { t } = useTranslation();
   const router = useRouter();
   const { login, isLoading } = useSession();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [language, setLanguage] = useState('en');
   const [isLoginMode, setIsLoginMode] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);

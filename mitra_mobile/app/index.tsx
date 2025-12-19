@@ -61,7 +61,7 @@ export default function IndexScreen() {
   const { t } = useTranslation();
   const router = useRouter();
   const { height } = useWindowDimensions();
-  const fadeAnim = useState(new Animated.Value(0))[0];
+  const fadeAnim = new Animated.Value(0);
 
   useEffect(() => {
     Animated.timing(fadeAnim, {

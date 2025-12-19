@@ -52,9 +52,9 @@ const AiSummaryDisplay: React.FC<AiSummaryDisplayProps> = ({ summary, loading, e
 
 export default function EducationPage() {
   const { t } = useTranslation();
-  const [educationData, setEducationData] = useState<EducationData>(mockEducationData);
-  const [loadingData, setLoadingData] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [educationData] = useState<EducationData>(mockEducationData);
+  const [loadingData] = useState(false);
+  const [error] = useState<string | null>(null);
 
   const SECTION_CONFIG = useMemo(() => [
     {
