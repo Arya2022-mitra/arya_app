@@ -34,7 +34,14 @@ const requiredEnvVars = {
 // Check for missing environment variables
 const missingVars = Object.entries(requiredEnvVars)
   .filter(([_, value]) => !value)
-  .map(([key]) => `FIREBASE_${key.replace(/([A-Z])/g, '_$1').toUpperCase()}`);
+  .map(([key]) => {
+    // Convert camelCase to SNAKE_CASE: apiKey -> API_KEY, authDomain -> AUTH_DOMAIN
+    const snakeCase = key
+      .replace(/([A-Z])/g, '_$1')
+      .replace(/^_/, '') // Remove leading underscore
+      .toUpperCase();
+    return `FIREBASE_${snakeCase}`;
+  });
 
 if (missingVars.length > 0) {
   console.error(
