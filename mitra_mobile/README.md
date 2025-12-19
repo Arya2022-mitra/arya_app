@@ -25,6 +25,15 @@ In the output, you'll find options to open the app in a
 
 You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
 
+## Docker & Deployment
+
+**Do you need Docker for this project?** Probably not! See [DOCKER_AUDIT.md](./DOCKER_AUDIT.md) for a comprehensive analysis.
+
+**TL;DR:**
+- For development: Use `npx expo start` (no Docker needed)
+- For mobile builds: Use EAS Build (cloud service)
+- For web deployment: Docker optional but can be useful
+
 ## Get a fresh project
 
 When you're ready, run:
