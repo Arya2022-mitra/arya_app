@@ -1,6 +1,15 @@
-# Welcome to your Expo app 👋
+# Mitra Mobile App 👋
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+This is the **main mobile application** for the Arya/Mitra project, built with [Expo](https://expo.dev) and React Native.
+
+## ⚠️ Important: Repository Structure
+
+This repository contains two main folders:
+
+- **`mitra_mobile/` (this folder)** - The active mobile app development workspace ⭐
+- **`frontend_reference/`** - Reference website code for understanding features 📚
+
+**For development, always work here in `mitra_mobile/`.** The `frontend_reference/` folder contains the original website code that serves as a reference for what features to build in the mobile app. See [../README.md](../README.md) for complete repository documentation.
 
 ## Get started
 
@@ -24,6 +33,12 @@ In the output, you'll find options to open the app in a
 - [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
 
 You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+
+## Reference Materials
+
+**Need to understand what features to build?** Check the `../frontend_reference/` folder, which contains the original website code. Use it as a reference to understand requirements and implement equivalent features in this mobile app.
+
+See [../frontend_reference/README.md](../frontend_reference/README.md) for details on how to use the reference materials effectively.
 
 ## Docker & Deployment
 
