@@ -46,7 +46,7 @@ export const SessionProvider: React.FC<SessionProviderProps> = ({ children }) =>
   const [activeProfileId, setActiveProfileIdState] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [sessionRestored, setSessionRestored] = useState(false);
-  const refreshTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const refreshTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const fetchProfile = useCallback(async (authToken: string, profileId: string) => {
     // Note: The API endpoint needs to support fetching a specific profile by ID
@@ -75,7 +75,11 @@ export const SessionProvider: React.FC<SessionProviderProps> = ({ children }) =>
       if (ok && data) {
         // Check if response has activeProfileId
         if (data.activeProfileId) {
-          await setActiveProfile(data.activeProfileId);
+          const success = await fetchProfile(authToken, data.activeProfileId);
+          if (success) {
+            await saveActiveProfileId(data.activeProfileId);
+            setActiveProfileIdState(data.activeProfileId);
+          }
         } else if (data.profile) {
           // If profile object is directly provided, use it
           setProfile(data.profile);
@@ -87,7 +91,7 @@ export const SessionProvider: React.FC<SessionProviderProps> = ({ children }) =>
       console.error('[SessionProvider] Failed to fetch user info:', error);
       return false;
     }
-  }, []);
+  }, [fetchProfile]);
 
   /**
    * Schedule periodic token refresh (every 55 minutes)
@@ -251,7 +255,7 @@ export const SessionProvider: React.FC<SessionProviderProps> = ({ children }) =>
       if (newToken) {
         setToken(newToken);
         // Optionally reload profile on token change
-        fetchUserInfo(newToken).catch(err => 
+        fetchUserInfo(newToken).catch((err: Error) => 
           console.error('[SessionProvider] Failed to fetch user info on token change:', err)
         );
       } else {
