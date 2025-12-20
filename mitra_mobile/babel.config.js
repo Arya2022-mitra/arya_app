@@ -21,6 +21,7 @@ module.exports = function (api) {
           alias: {
             '@app': './app',
             '@public': './public',
+            'frontend_reference': './stubs/frontend_reference',
           },
         },
       ],

@@ -1,6 +1,6 @@
 
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
-import { GoogleAuthProvider, signInWithCredential } from 'firebase/auth';
+import auth from '@react-native-firebase/auth';
 import { authInstance } from '../firebaseConfig';
 import { GOOGLE_WEB_CLIENT_ID } from '@env';
 
@@ -20,15 +20,14 @@ export const signInWithGoogle = async (): Promise<{ idToken: string; refreshToke
     await GoogleSignin.hasPlayServices();
     const result = await GoogleSignin.signIn();
     
-    // CRITICAL: Read idToken from result.data.idToken (not user.idToken)
-    const googleIdToken = result.data?.idToken;
+    const googleIdToken = result.idToken;
     
     if (!googleIdToken) {
       throw new Error('Google Sign-In failed: idToken not found in result');
     }
     
-    const googleCredential = GoogleAuthProvider.credential(googleIdToken);
-    const userCredential = await signInWithCredential(authInstance, googleCredential);
+    const googleCredential = auth.GoogleAuthProvider.credential(googleIdToken);
+    const userCredential = await authInstance.signInWithCredential(googleCredential);
     const firebaseIdToken = await userCredential.user.getIdToken();
     const refreshToken = userCredential.user.refreshToken || undefined;
     

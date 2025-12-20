@@ -40,6 +40,19 @@ The mobile app requires these keys at minimum (replace values with your own):
 
 - After creating or changing `mitra_mobile/.env`, fully restart Metro/Expo (`npx expo start -c`) so the bundler picks up the env values. The API base is validated at bundle/module import time.
 
+## DECOUPLING FROM `frontend_reference`
+
+To ensure a clean and efficient mobile build, the `mitra_mobile` project is completely decoupled from the `frontend_reference` directory. This is achieved through a combination of stub files and module aliasing.
+
+- **Stubs**: Minimal type definitions and no-op functions are provided in the `mitra_mobile/stubs` directory. These stubs replace the dependencies on `frontend_reference`, allowing the mobile app to compile and run without pulling in any web-only code.
+
+- **Module Aliasing**: The `babel.config.js` and `tsconfig.json` files are configured to redirect any imports of `frontend_reference` to the corresponding stub files. This ensures that the Metro bundler and TypeScript compiler never attempt to resolve the actual `frontend_reference` directory.
+
+- **Metro Blocklist**: The `metro.config.js` file includes a `blockList` configuration that explicitly prevents the Metro bundler from watching or resolving any files within the `frontend_reference` directory. This provides an additional layer of protection, guaranteeing that no web-only code is accidentally included in the mobile bundle.
+
+If you need to modify any of the stubbed dependencies, please refer to the `mitra_mobile/stubs/README.md` file for more information.
+
+
 ## OPTIONAL: app.config.js INJECTION (RELIABLE LOCAL BINDING)
 
 - If you prefer deterministic binding of local .env values into Expo config, add an `app.config.js` in mitra_mobile that loads `.env` and injects values into `expo.extra`. This makes values available via `Constants.expoConfig.extra`. `app.json` currently has `extra`, so this is a natural extension.

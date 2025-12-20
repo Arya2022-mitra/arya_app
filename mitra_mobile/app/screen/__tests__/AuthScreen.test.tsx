@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, fireEvent, within } from '@testing-library/react-native';
-import AuthScreen from '../../auth';
+import AuthScreen from '../../auth.page';
 import i18n from '../../i18n.config';
 
 // Mocking expo-router

@@ -9,57 +9,7 @@ import { colors, fonts } from '../constants/theme';
 import AiSummary from './components/daily-prediction/AiSummary'; // Re-using this for now
 import MonthlyDivineSummary from './components/monthly-prediction/MonthlyDivineSummary';
 import MonthlySpecialDates from './components/monthly-prediction/MonthlySpecialDates';
-
-// --- TYPE DEFINITIONS based on frontend_reference/web/hooks/useMonthlySummary.ts ---
-
-interface GoldenDate {
-  date: string;
-  start_time?: string;
-  end_time?: string;
-  score?: number;
-}
-
-interface ChandrashtamaPeriod {
-  date?: string;
-  start_time?: string;
-  end_time?: string;
-  current_nakshatra?: string;
-}
-
-interface MonthlySummaryData {
-  safe_payload: {
-    month_key: string;
-    month_name: string;
-    overall_score: number;
-    verdict: string;
-    top_domains: {
-      name: string;
-      display_name: string;
-      score: number;
-      outlook: string;
-      reason_short: string;
-    }[];
-    weekly_summary: Record<string, {
-      score: number;
-      outlook: string;
-      date_range: string;
-    }>;
-  };
-  one_line: string;
-  narration: string;
-  golden_dates_summary?: {
-    golden_dates: GoldenDate[];
-  };
-  chandrashtama_periods?: ChandrashtamaPeriod[];
-  chandrashtama_days?: string[];
-  dasha_summary?: {
-    current?: {
-      mahadasha?: string;
-      antardasha?: string;
-      pratyantardasha?: string;
-    };
-  };
-}
+import { GoldenDate, ChandrashtamaPeriod, MonthlySummaryData } from '../stubs/frontend_reference/web/hooks/useMonthlySummary';
 
 const getDefaultMonth = () => {
   const now = new Date();

@@ -11,7 +11,14 @@
       "android": {
         "buildType": "app-bundle"
       },
-      "ios": {}
+      "ios": {},
+      "envFile": ".env"
+    },
+    "production-apk": {
+      "android": {
+        "buildType": "apk"
+      },
+      "envFile": ".env"
     }
   },
   "submit": {

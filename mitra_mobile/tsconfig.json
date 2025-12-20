@@ -12,10 +12,10 @@
     "noEmit": true,
     "allowJs": false,
     "allowSyntheticDefaultImports": true,
-    "baseUrl": ".",
-    "paths": {
+    "baseUrl": ".","paths": {
       "@app/*": ["app/*"],
-      "@public/*": ["public/*"]
+      "@public/*": ["public/*"],
+      "frontend_reference/*": ["./stubs/frontend_reference/*"]
     }
   },
   "extends": "expo/tsconfig.base",
