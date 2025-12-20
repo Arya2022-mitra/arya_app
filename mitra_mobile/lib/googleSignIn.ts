@@ -6,26 +6,43 @@ import { GOOGLE_WEB_CLIENT_ID } from '@env';
 
 GoogleSignin.configure({
   webClientId: GOOGLE_WEB_CLIENT_ID,
+  offlineAccess: true, // Request refresh token
 });
 
-export const signInWithGoogle = async () => {
+/**
+ * Sign in with Google and return Firebase tokens
+ * 
+ * @returns Object with Firebase idToken and optional refreshToken
+ * @throws Error if sign-in fails
+ */
+export const signInWithGoogle = async (): Promise<{ idToken: string; refreshToken?: string }> => {
   try {
     await GoogleSignin.hasPlayServices();
-    const { user } = await GoogleSignin.signIn();
-    if (user.idToken) {
-      const googleCredential = GoogleAuthProvider.credential(user.idToken);
-      const userCredential = await signInWithCredential(authInstance, googleCredential);
-      const firebaseIdToken = await userCredential.user.getIdToken();
-      return firebaseIdToken;
+    const result = await GoogleSignin.signIn();
+    
+    // CRITICAL: Read idToken from result.data.idToken (not user.idToken)
+    const googleIdToken = result.data?.idToken;
+    
+    if (!googleIdToken) {
+      throw new Error('Google Sign-In failed: idToken not found in result');
     }
-    throw new Error('Google Sign-In failed: idToken not found.');
+    
+    const googleCredential = GoogleAuthProvider.credential(googleIdToken);
+    const userCredential = await signInWithCredential(authInstance, googleCredential);
+    const firebaseIdToken = await userCredential.user.getIdToken();
+    const refreshToken = userCredential.user.refreshToken || undefined;
+    
+    return {
+      idToken: firebaseIdToken,
+      refreshToken,
+    };
   } catch (error: any) {
     if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-      // user cancelled the login flow
+      throw new Error('Google Sign-In cancelled by user');
     } else if (error.code === statusCodes.IN_PROGRESS) {
-      // operation (e.g. sign in) is in progress already
+      throw new Error('Google Sign-In already in progress');
     } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-      // play services not available or outdated
+      throw new Error('Google Play Services not available or outdated');
     } else {
       // some other error happened
     }
