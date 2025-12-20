@@ -21,9 +21,9 @@ import { authInstance } from '../../firebaseConfig';
 import { GOOGLE_WEB_CLIENT_ID } from '@env';
 import { AuthService, AuthTokens } from './AuthService';
 
-// Secure storage keys
-const TOKEN_KEY = 'user_auth_token';
-const REFRESH_KEY = 'user_refresh_token';
+// Secure storage keys - exported for use by other modules
+export const TOKEN_KEY = 'user_auth_token';
+export const REFRESH_KEY = 'user_refresh_token';
 
 export class MobileAuthService implements AuthService {
   private initialized = false;

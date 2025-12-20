@@ -151,10 +151,10 @@ export const SessionProvider: React.FC<SessionProviderProps> = ({ children }) =>
     }
     
     // Call /api/me to get user info and profile
-    await fetchUserInfo(newToken);
+    const userInfoLoaded = await fetchUserInfo(newToken);
     
-    // Try to load last active profile if /api/me didn't provide one
-    if (!profile) {
+    // If /api/me didn't provide profile, try to load last active profile
+    if (!userInfoLoaded) {
       const lastActiveId = await getActiveProfileId();
       if (lastActiveId) {
         await fetchProfile(newToken, lastActiveId);
@@ -227,13 +227,15 @@ export const SessionProvider: React.FC<SessionProviderProps> = ({ children }) =>
           }
           
           // Try to fetch user info
-          await fetchUserInfo(storedToken);
+          const userInfoLoaded = await fetchUserInfo(storedToken);
           
           // If no profile loaded, try to load from last active profile ID
-          const storedProfileId = await getActiveProfileId();
-          if (storedProfileId && !profile) {
-            await fetchProfile(storedToken, storedProfileId);
-            setActiveProfileIdState(storedProfileId);
+          if (!userInfoLoaded) {
+            const storedProfileId = await getActiveProfileId();
+            if (storedProfileId) {
+              await fetchProfile(storedToken, storedProfileId);
+              setActiveProfileIdState(storedProfileId);
+            }
           }
           
           // Schedule periodic token refresh
@@ -255,7 +257,7 @@ export const SessionProvider: React.FC<SessionProviderProps> = ({ children }) =>
       if (newToken) {
         setToken(newToken);
         // Optionally reload profile on token change
-        fetchUserInfo(newToken).catch((err: Error) => 
+        fetchUserInfo(newToken).catch((err: any) => 
           console.error('[SessionProvider] Failed to fetch user info on token change:', err)
         );
       } else {

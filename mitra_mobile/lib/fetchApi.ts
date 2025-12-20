@@ -1,6 +1,6 @@
 
 import { getApiUrl } from './api';
-import { mobileAuthService } from '../shared/auth/MobileAuthService';
+import { mobileAuthService, TOKEN_KEY, REFRESH_KEY } from '../shared/auth/MobileAuthService';
 
 interface FetchOptions extends RequestInit {
   // Allow adding custom headers
@@ -166,15 +166,15 @@ async function refreshTokenViaBackend(): Promise<boolean> {
 
 /**
  * Helper to persist tokens directly to secure storage
- * (Since MobileAuthService doesn't expose a public persist method)
+ * Uses exported keys from MobileAuthService for consistency
  */
 async function persistTokensDirectly(idToken: string, refreshToken?: string): Promise<void> {
   const SecureStore = await import('expo-secure-store');
   
   try {
-    await SecureStore.setItemAsync('user_auth_token', idToken);
+    await SecureStore.setItemAsync(TOKEN_KEY, idToken);
     if (refreshToken) {
-      await SecureStore.setItemAsync('user_refresh_token', refreshToken);
+      await SecureStore.setItemAsync(REFRESH_KEY, refreshToken);
     }
   } catch (error) {
     console.error('[fetchApi] Failed to persist tokens:', error);
