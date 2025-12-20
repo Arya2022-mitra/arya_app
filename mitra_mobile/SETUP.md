@@ -25,14 +25,17 @@ This document explains how to set up the required environment variables for the 
 
 3. Update the `.env` file with your Firebase credentials:
    ```env
-   FIREBASE_API_KEY=your-actual-api-key
-   FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
-   FIREBASE_PROJECT_ID=your-project-id
-   FIREBASE_STORAGE_BUCKET=your-project.appspot.com
-   FIREBASE_MESSAGING_SENDER_ID=your-sender-id
-   FIREBASE_APP_ID=your-app-id
-   FIREBASE_MEASUREMENT_ID=your-measurement-id
+   EXPO_PUBLIC_FIREBASE_API_KEY=your-actual-api-key
+   EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
+   EXPO_PUBLIC_FIREBASE_PROJECT_ID=your-project-id
+   EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET=your-project.appspot.com
+   EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your-sender-id
+   EXPO_PUBLIC_FIREBASE_APP_ID=your-app-id
+   EXPO_PUBLIC_FIREBASE_MEASUREMENT_ID=your-measurement-id
+   EXPO_PUBLIC_API_URL=https://your-api-domain.com/api
    ```
+   
+   **Note**: The `EXPO_PUBLIC_` prefix is required for Expo to bundle these variables into your mobile app.
 
 4. Get your Google Web Client ID:
    - In Firebase Console, go to Authentication > Sign-in method
