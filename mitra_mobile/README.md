@@ -13,13 +13,20 @@ This repository contains two main folders:
 
 ## Get started
 
-1. Install dependencies
+1. **Environment Setup** (Required First Step)
+
+   Set up your Firebase and environment variables:
+   - See [SETUP.md](./SETUP.md) for general setup instructions
+   - For **Web platform**, see [WEB_ENV_CONFIG.md](./WEB_ENV_CONFIG.md)
+   - For **Mobile platforms**, see [ENV_CONFIG.md](./ENV_CONFIG.md)
+
+2. Install dependencies
 
    ```bash
    npm install
    ```
 
-2. Start the app
+3. Start the app
 
    ```bash
    npx expo start

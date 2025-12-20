@@ -2,6 +2,11 @@
 
 This document explains how to set up the required environment variables for the Mitra Mobile app.
 
+> **📱 Platform-specific guides:**
+> - For **Web platform** (Expo Web) setup and troubleshooting, see [WEB_ENV_CONFIG.md](./WEB_ENV_CONFIG.md)
+> - For **Mobile platform** (iOS/Android) detailed setup, see [ENV_CONFIG.md](./ENV_CONFIG.md)
+> - For **Authentication setup** (Google Sign-In, Firebase Auth), see [SETUP_AUTH.md](./SETUP_AUTH.md)
+
 ## Prerequisites
 
 - Firebase project set up at [Firebase Console](https://console.firebase.google.com/)

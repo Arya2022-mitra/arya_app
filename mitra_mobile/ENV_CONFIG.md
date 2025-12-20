@@ -2,7 +2,9 @@
 
 ## PURPOSE
 
-Provide exact, copyable guidance to configure environment variables for the Expo mobile app (mitra_mobile) so local development and device/emulator runs work reliably and securely. This document intentionally ignores web/Next.js—mobile only.
+Provide exact, copyable guidance to configure environment variables for the Expo mobile app (mitra_mobile) so local development and device/emulator runs work reliably and securely. This document intentionally focuses on **mobile native platforms (iOS/Android) only**.
+
+> **🌐 For Web platform setup:** See [WEB_ENV_CONFIG.md](./WEB_ENV_CONFIG.md) for web-specific Firebase and environment configuration.
 
 ## TARGET LOCATION
 
