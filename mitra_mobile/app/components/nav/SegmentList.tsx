@@ -18,7 +18,6 @@ export default function SegmentList() {
     { name: t('nav.personalPanchang'), path: '/personal-panchang' },
     { name: t('nav.guardian'), path: '/guardian' },
     { name: t('nav.dailyPrediction'), path: '/daily-prediction' },
-    { name: t('nav.dailyAlerts'), path: '/daily-alerts' },
     { name: t('nav.monthlyPrediction'), path: '/monthly-prediction' },
     { name: t('nav.tithis'), path: '/tithis' },
     { name: t('nav.numerology'), path: '/numerology' },
