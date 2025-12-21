@@ -103,12 +103,34 @@ When reviewing changes to MainApplication.kt:
 **Recommended CI Checks:**
 
 ```yaml
-# Example GitHub Actions workflow
-- name: Kotlin Lint
-  run: cd android && ./gradlew ktlintCheck
+# Example GitHub Actions workflow (partial - showing relevant steps)
+name: Android Build
+on: [pull_request]
 
-- name: Compile Debug Kotlin
-  run: cd android && ./gradlew :app:compileDebugKotlin
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      
+      - name: Install dependencies
+        run: npm install
+        working-directory: mitra_mobile
+      
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      
+      - name: Compile Debug Kotlin
+        run: ./gradlew :app:compileDebugKotlin
+        working-directory: mitra_mobile/android
 ```
 
 This ensures Kotlin compilation errors are caught before merge.
@@ -190,7 +212,8 @@ This fix verification involved auditing:
 ## References
 
 - [React Native Autolinking](https://github.com/react-native-community/cli/blob/main/docs/autolinking.md)
-- [Expo Autolinking](https://docs.expo.dev/bare/installing-unimodules/)
+- [Expo Modules](https://docs.expo.dev/modules/overview/)
+- [Expo Autolinking](https://docs.expo.dev/bare/overview/)
 - [Kotlin Style Guide](https://kotlinlang.org/docs/coding-conventions.html)
 - [React Native Android Setup](https://reactnative.dev/docs/native-modules-android)
 
