@@ -19,11 +19,40 @@ This repository contains two main folders:
    npm install
    ```
 
-2. Start the app
+2. Configure Firebase Authentication
+
+   **⚠️ IMPORTANT: Required for the app to run!**
+
+   **Option A: Automated Setup (Recommended)**
+   ```bash
+   # Run the setup script to automatically configure Firebase
+   npm run setup-firebase
+   
+   # Choose option 1 to extract from google-services.json
+   # Or choose option 3 to enter values interactively
+   ```
+
+   **Option B: Manual Setup**
+   ```bash
+   # Copy the example environment file
+   cp .env.example .env
+   
+   # Edit .env and replace ALL placeholder values with your actual Firebase configuration
+   # See FIREBASE_TROUBLESHOOTING.md for detailed instructions
+   
+   # Validate your configuration
+   npm run validate-firebase
+   ```
+
+   If you see errors, check [FIREBASE_TROUBLESHOOTING.md](./FIREBASE_TROUBLESHOOTING.md) for step-by-step instructions.
+
+3. Start the app
 
    ```bash
    npx expo start
    ```
+
+   **Note:** If you just updated `.env`, use `npx expo start -c` to clear cache.
 
 In the output, you'll find options to open the app in a
 
