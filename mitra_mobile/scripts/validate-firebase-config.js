@@ -24,8 +24,16 @@ function loadEnv(filePath) {
       return;
     }
     
-    // Parse KEY="VALUE" or KEY=VALUE
-    const match = line.match(/^([A-Z_]+)=["']?(.*)["']?$/);
+    // Parse KEY="VALUE" or KEY=VALUE or KEY='VALUE'
+    // First try to match quoted values
+    let match = line.match(/^([A-Z_]+)="([^"]*)"$/);
+    if (!match) {
+      match = line.match(/^([A-Z_]+)='([^']*)'$/);
+    }
+    if (!match) {
+      match = line.match(/^([A-Z_]+)=(.*)$/);
+    }
+    
     if (match) {
       env[match[1]] = match[2];
     }
@@ -118,6 +126,13 @@ optionalFields.forEach(field => {
 // Validate specific field formats
 console.log('\n📋 Validating field formats:\n');
 
+// Helper function to check storage bucket format
+function isValidStorageBucket(bucket) {
+  if (!bucket) return false;
+  const hasValidDomain = bucket.includes('appspot.com') || bucket.includes('firebasestorage.app');
+  return bucket.includes('.') && hasValidDomain;
+}
+
 if (env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN && 
     !env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN.endsWith('.firebaseapp.com')) {
   console.warn('⚠️  FIREBASE_AUTH_DOMAIN should end with .firebaseapp.com');
@@ -125,9 +140,7 @@ if (env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN &&
 }
 
 if (env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET && 
-    (!env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET.includes('.') || 
-     (!env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET.includes('appspot.com') && 
-      !env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET.includes('firebasestorage.app')))) {
+    !isValidStorageBucket(env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET)) {
   console.warn('⚠️  FIREBASE_STORAGE_BUCKET should end with .appspot.com or .firebasestorage.app');
   hasWarnings = true;
 }

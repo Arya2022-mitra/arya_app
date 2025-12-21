@@ -74,8 +74,16 @@ async function main() {
       const storageBucket = projectInfo.storage_bucket;
       const authDomain = `${projectId}.firebaseapp.com`;
 
-      // Get web client ID
-      const webClientId = client.services?.appinvite_service?.other_platform_oauth_client?.[0]?.client_id || '';
+      // Extract web client ID from services
+      let webClientId = '';
+      try {
+        const otherClients = client.services?.appinvite_service?.other_platform_oauth_client;
+        if (otherClients && otherClients.length > 0) {
+          webClientId = otherClients[0].client_id;
+        }
+      } catch (e) {
+        // Web client ID is optional
+      }
 
       console.log('\n✅ Successfully extracted Firebase configuration from google-services.json\n');
 
