@@ -35,8 +35,10 @@ export const firebaseConfig = {
   measurementId: getEnvVar('EXPO_PUBLIC_FIREBASE_MEASUREMENT_ID', 'NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID', 'FIREBASE_MEASUREMENT_ID') ?? '',
 };
 
+// Validate required Firebase configuration (measurementId is optional)
+const requiredFields = ['apiKey', 'authDomain', 'projectId', 'storageBucket', 'messagingSenderId', 'appId'];
 const missing = Object.entries(firebaseConfig)
-  .filter(([_, v]) => !v)
+  .filter(([k, v]) => requiredFields.includes(k) && !v)
   .map(([k]) => k);
 
 if (missing.length > 0) {
@@ -50,7 +52,14 @@ if (missing.length > 0) {
     measurementId: ['EXPO_PUBLIC_FIREBASE_MEASUREMENT_ID','NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID','FIREBASE_MEASUREMENT_ID'],
   };
   const tried = missing.map(k => `${k}: ${mapping[k].join(' | ')}`).join('; ');
-  console.error(`[firebaseConfig] Missing Firebase values for: ${missing.join(', ')}. Tried env keys -> ${tried}.`);
+  const errorMessage = `[firebaseConfig] Missing Firebase values for: ${missing.join(', ')}. Tried env keys -> ${tried}. Please check your .env file in mitra_mobile/.env`;
+  console.error(errorMessage);
+  
+  // Also provide helpful guidance
+  console.error('[firebaseConfig] To fix this issue:');
+  console.error('1. Copy .env.example to .env in the mitra_mobile folder');
+  console.error('2. Replace placeholder values with your actual Firebase configuration');
+  console.error('3. Restart Metro bundler with: npx expo start -c');
 }
 
 export default firebaseConfig;
