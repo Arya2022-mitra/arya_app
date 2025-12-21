@@ -23,6 +23,16 @@ This repository contains two main folders:
 
    **⚠️ IMPORTANT: Required for the app to run!**
 
+   **Option A: Automated Setup (Recommended)**
+   ```bash
+   # Run the setup script to automatically configure Firebase
+   npm run setup-firebase
+   
+   # Choose option 1 to extract from google-services.json
+   # Or choose option 3 to enter values interactively
+   ```
+
+   **Option B: Manual Setup**
    ```bash
    # Copy the example environment file
    cp .env.example .env

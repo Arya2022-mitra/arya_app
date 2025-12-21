@@ -25,7 +25,7 @@ function loadEnv(filePath) {
     }
     
     // Parse KEY="VALUE" or KEY=VALUE
-    const match = line.match(/^([A-Z_]+)=["']?(.+?)["']?$/);
+    const match = line.match(/^([A-Z_]+)=["']?(.*)["']?$/);
     if (match) {
       env[match[1]] = match[2];
     }
@@ -126,8 +126,8 @@ if (env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN &&
 
 if (env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET && 
     (!env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET.includes('.') || 
-     !env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET.includes('appspot.com') && 
-     !env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET.includes('firebasestorage.app'))) {
+     (!env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET.includes('appspot.com') && 
+      !env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET.includes('firebasestorage.app')))) {
   console.warn('⚠️  FIREBASE_STORAGE_BUCKET should end with .appspot.com or .firebasestorage.app');
   hasWarnings = true;
 }
