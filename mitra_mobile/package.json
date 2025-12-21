@@ -10,7 +10,8 @@
     "web": "npx expo start --web",
     "lint": "expo lint",
     "build:web": "expo export -p web",
-    "test": "jest"
+    "test": "jest",
+    "validate-firebase": "node ./scripts/validate-firebase-config.js"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
