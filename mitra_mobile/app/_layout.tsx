@@ -6,13 +6,28 @@ import { useState } from "react";
 import { I18nextProvider } from "react-i18next";
 import i18n from "./i18n.config";
 import { SessionProvider } from "../shared/context/SessionContext";
+import { useFonts } from "expo-font";
+import { SplashScreen } from "expo-router";
 
 export default function RootLayout() {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
 
+  const [fontsLoaded] = useFonts({
+    "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
+    "Poppins-Bold": require("../assets/fonts/Poppins-Bold.ttf"),
+    "Cinzel-Regular": require("../assets/fonts/Cinzel-Regular.ttf"),
+    "TiroDevanagariSanskrit-Regular": require("../assets/fonts/TiroDevanagariSanskrit-Regular.ttf"),
+    "Orbitron-Regular": require("../assets/fonts/Orbitron-Regular.ttf"),
+    "Rajdhani-Regular": require("../assets/fonts/Rajdhani-Regular.ttf"),
+  });
+
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
+
+  if (!fontsLoaded) {
+    return <SplashScreen />;
+  }
 
   return (
     <SessionProvider>
@@ -35,7 +50,6 @@ export default function RootLayout() {
           <Stack.Screen name="settings" options={{ title: "Settings" }} />
           <Stack.Screen name="business" options={{ title: "Business" }} />
           <Stack.Screen name="career" options={{ title: "Career" }} />
-          <Stack.Screen name="daily-alerts" options={{ title: "Daily Alerts" }} />
           <Stack.Screen
             name="daily-panchang"
             options={{ title: "Daily Panchang" }}
