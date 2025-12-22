@@ -1,3 +1,4 @@
+
 pluginManagement {
   def reactNativeGradlePlugin = new File(
     providers.exec {
@@ -37,3 +38,5 @@ expoAutolinking.useExpoVersionCatalog()
 
 include ':app'
 includeBuild(expoAutolinking.reactNativeGradlePlugin)
+
+apply from: new File(rootDir.parentFile, "node_modules/expo-modules-autolinking/scripts/autolinking.gradle")
