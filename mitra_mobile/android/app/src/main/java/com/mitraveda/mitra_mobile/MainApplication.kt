@@ -32,8 +32,8 @@ class MainApplication : Application(), ReactApplication {
 
           override val isNewArchEnabled: Boolean = BuildConfig.IS_NEW_ARCHITECTURE_ENABLED
           
-          // Disable bridgeless mode to resolve PlatformConstants missing error
-          override val isBridgelessEnabled: Boolean = false
+          // Enable Bridgeless mode as per New Architecture goals
+          override val isBridgelessEnabled: Boolean = BuildConfig.IS_NEW_ARCHITECTURE_ENABLED
       }
   )
 

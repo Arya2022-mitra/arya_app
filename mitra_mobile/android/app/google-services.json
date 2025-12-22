@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "230188375703",
+    "project_id": "mitraveda-c1c03",
+    "storage_bucket": "mitraveda-c1c03.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:230188375703:android:cd2c8156c4d1ac811c53d2",
+        "android_client_info": {
+          "package_name": "com.mitraveda.mitra_mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "230188375703-fj5ldudngpjnakiai9po7gqo6upjq8n5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mitraveda.mitra_mobile",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "230188375703-fhlqrdpctfpfkku32295a5pdbn6tarmj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAfAwHZXinnMXpYab8PhnQRr5AH0bPtT4g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "230188375703-7cst6b4rpj0c7hib1rt08ulgem50lgh6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
