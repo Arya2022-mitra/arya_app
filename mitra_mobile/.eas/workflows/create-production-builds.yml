@@ -1,6 +1,0 @@
-builds:
-  android:
-    production-apk:
-      workflow: managed
-      env:
-        EAS_BUILD_PROFILE: production-apk
